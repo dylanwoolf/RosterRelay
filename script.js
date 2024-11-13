@@ -4,18 +4,6 @@ let autoScrollInterval = null;
 let isDragging = false;
 
 const teams = [
-    /* AL EAST */
-    //"New York Yankees", "Boston Red Sox", "Tampa Bay Rays", "Baltimore Orioles", "Toronto Blue Jays",
-    /* AL CENTRAL */
-    //"Cleveland Guardians", "Chicago White Sox", "Kansas City Royals", "Detroit Tigers", "Minnesota Twins",
-    /* AL WEST */
-    //"Houston Astros", "Texas Rangers", "Oakland Athletics", "Seattle Mariners", "Los Angeles Angels",
-    /* NL EAST */
-    //"New York Mets", "Philadelphia Phillies", "Miami Marlins", "Washington Nationals", "Atlanta Braves",
-    /* NL CENTRAL */
-    //"Milwaukee Brewers", "Chicago Cubs", "St. Louis Cardinals", "Pittsburgh Pirates", "Cincinnati Reds",
-    /* NL WEST */
-    //"Los Angeles Dodgers", "San Diego Padres", "Colorado Rockies", "San Francisco Giants", "Arizona Diamondbacks"
     // Teams in alphabetical order
     "Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox",
     "Chicago Cubs", "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies",
@@ -29,9 +17,9 @@ const teams = [
 async function loadPlayerData() {
     try {
         const response = await fetch('./data/players.json');
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        //if (!response.ok) {
+        //    throw new Error(`HTTP error! status: ${response.status}`);
+        //}
         const data = await response.json();
         players = data.players; // Assuming your JSON has a "players" array
         console.log('Players loaded successfully:', players);
@@ -40,11 +28,9 @@ async function loadPlayerData() {
         setupScrollHandling();
     } catch (error) {
         console.error('Error loading player data:', error);
-        document.getElementById('playerContainer').innerHTML = 
-            '<div class="error">Error loading player data. Please check the console for details.</div>';
     }
 
-    document.getElementById('newPlayersButton').addEventListener('click', displayPlayers);
+    //document.getElementById('newPlayersButton').addEventListener('click', displayPlayers);
 }
 
 function setupScrollHandling() {
@@ -97,7 +83,10 @@ function displayPlayers() {
         nameDiv.textContent = player.name;
         
         const dropZonesDiv = document.createElement('div');
-        dropZonesDiv.className = 'drop-zones';
+        dropZonesDiv.className = 'drop-zone-container';
+        //dropZone.dataset.playerName = player.name;
+        //dropZone.addEventListener('dragover', handleDragOver);
+        //dropZone.addEventListener('drop', handleDrop);
         
         player.teams.forEach(() => {
             const dropZone = document.createElement('div');
@@ -107,6 +96,7 @@ function displayPlayers() {
             dropZone.addEventListener('drop', handleDrop);
             dropZonesDiv.appendChild(dropZone);
         });
+        
         
         playerRow.appendChild(nameDiv);
         playerRow.appendChild(dropZonesDiv);
@@ -129,12 +119,6 @@ function displayTeams() {
     });
 }
 
-function handleDragStart(e) {
-    isDragging = true;
-    e.target.classList.add('dragging');
-    e.dataTransfer.setData('text/plain', e.target.textContent);
-    e.dataTransfer.effectAllowed = 'move';
-}
 
 function handleDragEnd(e) {
     isDragging = false;
@@ -145,46 +129,34 @@ function handleDragEnd(e) {
     });
 }
 
-function handleDragOver(e) {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
+function handleDragStart(event) {
+    isDragging = true;
+    event.dataTransfer.setData('text', event.target.textContent);
 }
 
-function handleDrop(e) {
-    e.preventDefault();
-    const teamName = e.dataTransfer.getData('text/plain');
-    const dropZone = e.target;
-    
-    if (!dropZone.classList.contains('drop-zone')) return;
-    if (dropZone.classList.contains('filled')) return;
-    
-    const playerName = dropZone.dataset.playerName;
-    const player = players.find(p => p.name === playerName);
-    
-    if (player && player.teams.includes(teamName)) {
-        dropZone.textContent = teamName;
-        dropZone.classList.add('filled');
-        updateScore(1);
-    } else {
-        updateScore(-1);
-    }
+function handleDragOver(event) {
+    event.preventDefault();
 }
 
+function handleDrop(event) {
+    event.preventDefault();
+    const teamName = event.dataTransfer.getData('text');
 
+    // Clear any exisitng content in the drop zone to allow only one team per slot
+    event.target.innerHTML = '';
 
-// Initialize the game when the DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    loadPlayerData();
+    // Create a new div for each team placed in the drop zone
+    const teamDiv = document.createElement('div');
+    teamDiv.className = 'placed-team';
+    teamDiv.textContent = teamName;
 
-    // Event listener for "Get New Players" button
-    document.getElementById('newPlayersButton').addEventListener('click', () => {
-        resetScore();
-        displayPlayers(); // Display five new players
-    });
+    // Add team to the drop zone
+    //event.target.textContent = teamName;
+    event.target.appendChild(teamDiv);
+    // Remove any previous color
+    event.target.classList.remove('correct', 'incorrect');
+}
 
-    // Event listener for "Submit" button
-    document.getElementById('submitButton').addEventListener('click', checkPlacements);
-});
 
 // Reset the score to zero
 function resetScore() {
@@ -195,28 +167,69 @@ function resetScore() {
 // Function to check team placements and update colors based on correctness
 function checkPlacements() {
     const dropZones = document.querySelectorAll('.drop-zone');
+    let allCorrect = true; // Flag to track if everything is correct
 
     dropZones.forEach(dropZone => {
-        const playerName = dropZone.dataset.playerName;
-        const teamName = dropZone.textContent;
-        const player = players.find(p => p.name === playerName);
-
-        if(player && player.teams.includes(teamName)) {
-            // Team is correctly placed
+        const playerName = dropZone.dataset.playerName; // The player's name assigned to this drop zone
+        const teamName = dropZone.textContent; // The team name placed in this drop zone
+        const player = players.find(p => p.name === playerName); // Find the player object by name
+        
+        // Check if the team is correctly placed for the player
+        if (player && player.teams.includes(teamName)) {
             dropZone.classList.add('correct');
             dropZone.classList.remove('incorrect');
-            updateScore(1);
+            updateScore(1); // Increase score for correct placement
         } else if (teamName !== "") {
-            // Team is incorrectly placed
             dropZone.classList.add('incorrect');
             dropZone.classList.remove('correct');
-            updateScore(-1);
+            updateScore(-1); // Decrease score for incorrect placement
+            allCorrect = false; // If any answer is incorrect, set the flag to false
         }
-    })
+        
+    });
+
+    // Provide feedback if all answers are correct or not
+    //if (allCorrect) {
+     //   alert("Congratulations! All answers are correct!");
+    //} //else {
+        //alert("Some answers are incorrect. Please try again.");
+    //}
 }
+
 
 // Update score function
 function updateScore(points) {
     score += points;
     document.getElementById('score').textContent = score;
 }
+
+// Initialize the game when the DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    loadPlayerData();
+    //displayPlayers();
+
+    /*
+    // Make each team name draggable
+    const teams = document.querySelectorAll('.team');
+    teams.forEach(team => {
+        team.setAttribute('draggable', true);
+        team.addEventListener('dragstart', handleDragStart);
+    });
+
+    // Set up drop zones for each player
+    const dropZones = document.querySelectorAll('.drop-zone');
+    dropZones.forEach(dropZone => {
+        dropZone.addEventListener('dragover', handleDragOver);
+        dropZone.addEventListener('drop', handleDrop);
+    });
+    */
+
+    // Event listener for "Get New Players" button
+    document.getElementById('newPlayersButton').addEventListener('click', () => {
+        resetScore();
+        displayPlayers(); // Display five new players
+    });
+
+    // Event listener for "Submit" button
+    document.getElementById('submitButton').addEventListener('click', checkPlacements);
+});
