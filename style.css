@@ -1,0 +1,196 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.player-container {
+    background: white;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.player-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 10px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+
+.player-name {
+    font-weight: bold;
+}
+
+.drop-zones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.drop-zone {
+    width: 150px;
+    height: 40px;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+}
+
+.drop-zone.filled {
+    border-style: solid;
+    border-color: #4CAF50;
+    background: #E8F5E9;
+}
+
+.team-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.team-item {
+    padding: 8px 16px;
+    background: #2196F3;
+    color: white;
+    border-radius: 4px;
+    cursor: move;
+    user-select: none;
+}
+
+.team-item:hover {
+    background: #1976D2;
+}
+
+.score {
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Add padding to account for fixed elements */
+.content-wrapper {
+    padding-top: 60px;  /* Space for score */
+    padding-bottom: 100px;  /* Space for team list */
+}
+
+/* Style for the dragging ghost image */
+.team-item.dragging {
+    opacity: 0.5;
+}
+
+/* Scroll indicators */
+.scroll-indicator {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(rgba(0,0,0,0.1), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 999;
+}
+
+.scroll-indicator.top {
+    top: 40px;
+}
+
+.scroll-indicator.bottom {
+    bottom: 100px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.1));
+}
+
+.scroll-indicator.visible {
+    opacity: 1;
+}
+
+/* Style for Get New Players Button */
+#newPlayersButton {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    align-self: center; /* Center the button horizontally */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+}
+
+#newPlayersButton:hover {
+    background-color: #45a049;
+}
+
+#newPlayersButton:active {
+    background-color: #3e8e41;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transform: translateY(1px);
+}
+
+/* Style for Submit Button */
+#submitButton {
+    padding: 10px 20px;
+    background-color: #5a60b6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    align-self: center; /* Center the button horizontally */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+}
+
+#submitButton:hover {
+    background-color: #35428f;
+}
+
+#submitButton:active {
+    background-color: #35428f;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transform: translateY(1px);
+}
+
+.inline {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Add styles for correct and incorrect placements */
+.drop-zone.correct {
+    border-color: #4CAF50;
+    background-color: #E8F5E9;
+    color: #4CAF50;
+}
+
+.drop-zone.incorrect {
+    border-color: #F44336;
+    background-color: #FFEBEE;
+    color: #F44336;
+}

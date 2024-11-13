@@ -1,0 +1,85 @@
+{
+    "players": [
+      {
+        "name": "Max Scherzer",
+        "teams": ["Arizona Diamondbacks", "Detroit Tigers", "Washington Nationals", "Los Angeles Dodgers", "New York Mets", "Texas Rangers"]
+      },
+      {
+        "name": "Justin Verlander",
+        "teams": ["Detroit Tigers", "Houston Astros", "New York Mets"]
+      },
+      {
+        "name": "Aaron Judge",
+        "teams": ["New York Yankees"]
+      },
+      {
+        "name": "Freddie Freeman",
+        "teams": ["Atlanta Braves", "Los Angeles Dodgers"]
+      },
+      {
+        "name": "Mookie Betts",
+        "teams": ["Boston Red Sox", "Los Angeles Dodgers"]
+      },
+      {
+        "name": "Bryce Harper",
+        "teams": ["Washington Nationals", "Philadelphia Phillies"]
+      },
+      {
+        "name": "Jacob deGrom",
+        "teams": ["New York Mets", "Texas Rangers"]
+      },
+      {
+        "name": "Shohei Ohtani",
+        "teams": ["Los Angeles Angels", "Los Angeles Dodgers"]
+      },
+      {
+        "name": "Nolan Arenado",
+        "teams": ["Colorado Rockies", "St. Louis Cardinals"]
+      },
+      {
+        "name": "Juan Soto",
+        "teams": ["Washington Nationals", "San Diego Padres", "New York Yankees"]
+      },
+      {
+        "name": "Manny Machado",
+        "teams": ["Baltimore Orioles", "Los Angeles Dodgers", "San Diego Padres"]
+      },
+      {
+        "name": "Corey Seager",
+        "teams": ["Los Angeles Dodgers", "Texas Rangers"]
+      },
+      {
+        "name": "Gerrit Cole",
+        "teams": ["Pittsburgh Pirates", "Houston Astros", "New York Yankees"]
+      },
+      {
+        "name": "Jose Altuve",
+        "teams": ["Houston Astros"]
+      },
+      {
+        "name": "Francisco Lindor",
+        "teams": ["Cleveland Guardians", "New York Mets"]
+      },
+      {
+        "name": "Xander Bogaerts",
+        "teams": ["Boston Red Sox", "San Diego Padres"]
+      },
+      {
+        "name": "Giancarlo Stanton",
+        "teams": ["Miami Marlins", "New York Yankees"]
+      },
+      {
+        "name": "Anthony Rizzo",
+        "teams": ["San Diego Padres", "Chicago Cubs", "New York Yankees"]
+      },
+      {
+        "name": "Paul Goldschmidt",
+        "teams": ["Arizona Diamondbacks", "St. Louis Cardinals"]
+      },
+      {
+        "name": "Trea Turner",
+        "teams": ["Washington Nationals", "Los Angeles Dodgers", "Philadelphia Phillies"]
+      }
+    ]
+  }
+  
