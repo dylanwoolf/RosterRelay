@@ -169,30 +169,40 @@ function checkPlacements() {
     const dropZones = document.querySelectorAll('.drop-zone');
     let allCorrect = true; // Flag to track if everything is correct
 
-    dropZones.forEach(dropZone => {
-        const playerName = dropZone.dataset.playerName; // The player's name assigned to this drop zone
-        const teamName = dropZone.textContent; // The team name placed in this drop zone
-        const player = players.find(p => p.name === playerName); // Find the player object by name
-        
-        // Check if the team is correctly placed for the player
-        if (player && player.teams.includes(teamName)) {
-            dropZone.classList.add('correct');
-            dropZone.classList.remove('incorrect');
-            updateScore(1); // Increase score for correct placement
-        } else if (teamName !== "") {
-            dropZone.classList.add('incorrect');
-            dropZone.classList.remove('correct');
-            updateScore(-1); // Decrease score for incorrect placement
-            allCorrect = false; // If any answer is incorrect, set the flag to false
-        }
-        
+    // Loop through each player individually
+    players.forEach(player => {
+        const playerDropZones = Array.from(dropZones).filter(dropZone => dropZone.dataset.playerName === player.name);
+
+        playerDropZones.forEach((dropZone, index) => {
+            const teamDiv = dropZone.querySelector('.placed-team'); // Access the placed team in the drop zone
+            const teamName = teamDiv ? teamDiv.textContent : ''; // Get the placed team name
+            const correctTeamName = player.teams[index]; // Correct team for this position
+
+            // Remove any previous classes
+            dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+
+            if (teamName === correctTeamName) {
+                // Team is correctly placed and in the correct order
+                dropZone.classList.add('correct');
+                updateScore(1); // Increase score for correct placement
+            } else if (player.teams.includes(teamName)) {
+                // Team is correct for the player but in the wrong order
+                dropZone.classList.add('misplaced');
+                allCorrect = false;
+            } else {
+                // Team is incorrect for the player
+                dropZone.classList.add('incorrect');
+                updateScore(-1); // Decrease score for incorrect placement
+                allCorrect = false;
+            }
+        });
     });
 
     // Provide feedback if all answers are correct or not
-    //if (allCorrect) {
-     //   alert("Congratulations! All answers are correct!");
-    //} //else {
-        //alert("Some answers are incorrect. Please try again.");
+    if (allCorrect) {
+        showModal("Congratulations! All answers are correct!");
+    } //else {
+    //   showModal("Some answers are incorrect. Please try again.");
     //}
 }
 
@@ -208,22 +218,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadPlayerData();
     //displayPlayers();
 
-    /*
-    // Make each team name draggable
-    const teams = document.querySelectorAll('.team');
-    teams.forEach(team => {
-        team.setAttribute('draggable', true);
-        team.addEventListener('dragstart', handleDragStart);
-    });
-
-    // Set up drop zones for each player
-    const dropZones = document.querySelectorAll('.drop-zone');
-    dropZones.forEach(dropZone => {
-        dropZone.addEventListener('dragover', handleDragOver);
-        dropZone.addEventListener('drop', handleDrop);
-    });
-    */
-
     // Event listener for "Get New Players" button
     document.getElementById('newPlayersButton').addEventListener('click', () => {
         resetScore();
@@ -232,4 +226,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listener for "Submit" button
     document.getElementById('submitButton').addEventListener('click', checkPlacements);
+});
+
+// Get the modal element
+const modal = document.getElementById('congratulationsModal');
+const closeButton = document.getElementById('closeModal');
+
+function showModal(message) {
+  const modalMessage = modal.querySelector('p');
+  modalMessage.textContent = message;
+  modal.style.display = 'block';
+}
+
+function hideModal() {
+  modal.style.display = 'none';
+}
+
+// Close the modal when the close button is clicked
+closeButton.addEventListener('click', hideModal);
+
+// Close the modal when the user clicks outside the modal
+window.addEventListener('click', (event) => {
+  if (event.target === modal) {
+    hideModal();
+  }
 });
