@@ -9,10 +9,18 @@
 <body>
     <div class="container">
         <div class="score">Score: <span id="score">0</span></div>
-        <button class="inline" id="newPlayersButton">Get New Players</button>
-        <button class="inline" id="submitButton">Submit</button>
+        <div id="buttonContainer">
+            <button class="inline" id="newPlayersButton">Get New Players</button>
+            <button class="inline" id="submitButton">Submit</button>
+        </div>
         <div class="player-container" id="playerContainer"></div>
         <div class="team-list" id="teamList"></div>
+        <div id="congratulationsModal" class="modal">
+            <div class="modal-content">
+                <span id="closeModal" class="close-button">&times;</span>
+                <p>Congratulations! All answers are correct!</p>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
