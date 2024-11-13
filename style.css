@@ -41,7 +41,7 @@ body {
 .drop-zone {
     width: 150px;
     height: 40px;
-    border: 2px dashed #ccc;
+    border: 2px solid #ccc;
     border-radius: 4px;
     display: flex;
     align-items: center;
@@ -177,9 +177,18 @@ body {
     transform: translateY(1px);
 }
 
-.inline {
-    display: inline-block;
-    margin-right: 5px;
+/* Place get new players and submit buttons next to each other */
+#buttonContainer {
+    display: flex;
+    gap: 20px; /* Space between buttons */
+    justify-content: center; /* Center align buttons */
+    margin-top: 20px; /* Add space from the top */
+}
+
+#newPlayersButton, #submitButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
 /* Add styles for correct and incorrect placements */
@@ -193,4 +202,68 @@ body {
     border-color: #F44336;
     background-color: #FFEBEE;
     color: #F44336;
+}
+
+/* Message box style
+#messageBox {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    text-align: center;
+    z-index: 1000;
+}
+
+#messageBox.show {
+    display: block;
+}
+*/
+
+/* Modal background */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+/* Modal content box */
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 300px;
+}
+
+/* Close button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #555;
+}
+
+/* Misplaced */
+.misplaced {
+    background-color: rgb(255, 255, 185);
+    border-color: yellow;
+    color: black;
 }
