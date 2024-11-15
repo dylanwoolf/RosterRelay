@@ -1,7 +1,11 @@
 let players = []; // Declare players array globally
-let score = 0;
+//let score = 0;
 let autoScrollInterval = null;
 let isDragging = false;
+let strikes = 0; // INitialize strikes
+const maxStrikes = 3;
+const dots = document.querySelectorAll('.dot');
+const submitButton = document.querySelector('#submitButton');
 
 const teams = [
     // Teams in alphabetical order
@@ -159,15 +163,18 @@ function handleDrop(event) {
 
 
 // Reset the score to zero
+/*
 function resetScore() {
     score = 0;
     document.getElementById('score').textContent = score;
 }
+*/
 
 // Function to check team placements and update colors based on correctness
 function checkPlacements() {
     const dropZones = document.querySelectorAll('.drop-zone');
     let allCorrect = true; // Flag to track if everything is correct
+    let hasFilledSlots = false; // Flag to teack if there are any filled slots
 
     // Loop through each player individually
     players.forEach(player => {
@@ -176,6 +183,14 @@ function checkPlacements() {
         playerDropZones.forEach((dropZone, index) => {
             const teamDiv = dropZone.querySelector('.placed-team'); // Access the placed team in the drop zone
             const teamName = teamDiv ? teamDiv.textContent : ''; // Get the placed team name
+            
+            // Skip checking if the slot is empty
+            if(!teamName) {
+                dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+                return;
+            }
+            hasFilledSlots = true; // At least one slot is filled
+            
             const correctTeamName = player.teams[index]; // Correct team for this position
 
             // Remove any previous classes
@@ -184,7 +199,6 @@ function checkPlacements() {
             if (teamName === correctTeamName) {
                 // Team is correctly placed and in the correct order
                 dropZone.classList.add('correct');
-                updateScore(1); // Increase score for correct placement
             } else if (player.teams.includes(teamName)) {
                 // Team is correct for the player but in the wrong order
                 dropZone.classList.add('misplaced');
@@ -192,26 +206,45 @@ function checkPlacements() {
             } else {
                 // Team is incorrect for the player
                 dropZone.classList.add('incorrect');
-                updateScore(-1); // Decrease score for incorrect placement
                 allCorrect = false;
+                addStrike(); // Add a strike for incorrect placements
             }
         });
     });
 
     // Provide feedback if all answers are correct or not
-    if (allCorrect) {
+    if (allCorrect && hasFilledSlots) {
         showModal("Congratulations! All answers are correct!");
     } //else {
     //   showModal("Some answers are incorrect. Please try again.");
     //}
 }
 
+// Add a strike and update the dots
+function addStrike() {
+    if (strikes < maxStrikes) {
+        dots[strikes].classList.remove('empty');
+        dots[strikes].classList.add('filled');
+        strikes++;
+    }
+    if (strikes === maxStrikes) {
+        endGame();
+    }
+}
+
+// End the game when the player runs out of strikes
+function endGame() {
+    submitButton.disabled = true;
+    alert("3 strikes, you're out! Game Over!");
+}
 
 // Update score function
+/*
 function updateScore(points) {
     score += points;
     document.getElementById('score').textContent = score;
 }
+*/
 
 // Initialize the game when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -220,7 +253,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event listener for "Get New Players" button
     document.getElementById('newPlayersButton').addEventListener('click', () => {
-        resetScore();
+        //resetScore();
+        strikes = 0; // Reset strikes
+        dots.forEach(dot => {
+            dot.classList.remove('filled');
+            dot.classList.add('empty');
+        });
+        submitButton.disabled = false; // Re-enable submit button
         displayPlayers(); // Display five new players
     });
 
