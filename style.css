@@ -4,6 +4,11 @@ body {
     background-color: #f0f0f0;
 }
 
+h1 {
+    margin: 10px 0; /* Reduce top and bottom spacing */
+    text-align: center; /* Optional: Center the title */
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -192,7 +197,7 @@ body {
     display: flex;
     gap: 20px; /* Space between buttons */
     justify-content: center; /* Center align buttons */
-    margin-top: 20px; /* Add space from the top */
+    margin-top: 5px; /* Add space from the top */
 }
 
 #newPlayersButton, #submitButton {
@@ -276,4 +281,26 @@ body {
     background-color: rgb(255, 255, 185);
     border-color: yellow;
     color: black;
+}
+
+.outs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px; /* Space between dots */
+    font-size: 1.5em;
+    margin-top: 1px;
+    margin-bottom: 5px; /* Space below */
+}
+
+.dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ddd; /* Empty dot color */
+    border: 2px solid #bbb; /* Border for better visibility */
+}
+
+.dot.filled {
+    background-color: #F44336; /* Filled dot color (red) */
 }
