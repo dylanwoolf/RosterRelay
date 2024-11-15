@@ -8,10 +8,17 @@
 </head>
 <body>
     <div class="container">
-        <div class="score">Score: <span id="score">0</span></div>
+        <!-- <div class="score">Score: <span id="score">0</span></div> -->
+        <h1>Roster Relay</h1>
         <div id="buttonContainer">
             <button class="inline" id="newPlayersButton">Get New Players</button>
             <button class="inline" id="submitButton">Submit</button>
+        </div>
+        <div class="outs">
+            <p><strong>Strikes:</strong></p>
+            <span class="dot empty"></span>
+            <span class="dot empty"></span>
+            <span class="dot empty"></span>
         </div>
         <div class="player-container" id="playerContainer"></div>
         <div class="team-list" id="teamList"></div>
@@ -20,7 +27,7 @@
                 <span id="closeModal" class="close-button">&times;</span>
                 <p>Congratulations! All answers are correct!</p>
             </div>
-        </div>
+        </div>      
     </div>
     <script src="script.js"></script>
 </body>
