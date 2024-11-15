@@ -26,6 +26,8 @@ body {
     padding: 10px;
     border-bottom: 1px solid #eee;
     align-items: center;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .player-name {
@@ -38,14 +40,22 @@ body {
     flex-wrap: wrap;
 }
 
+.drop-zone-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
 .drop-zone {
-    width: 150px;
+    width: 100%;
+    max-width: 150px;
     height: 40px;
     border: 2px solid #ccc;
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
     background: #f9f9f9;
 }
 
