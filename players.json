@@ -6,7 +6,7 @@
       },
       {
         "name": "Justin Verlander",
-        "teams": ["Detroit Tigers", "Houston Astros", "New York Mets"]
+        "teams": ["Detroit Tigers", "Houston Astros", "New York Mets", "Houston Astros"]
       },
       {
         "name": "Aaron Judge",
@@ -79,6 +79,68 @@
       {
         "name": "Trea Turner",
         "teams": ["Washington Nationals", "Los Angeles Dodgers", "Philadelphia Phillies"]
+      },
+      {
+        "name": "Christian Yelich",
+        "teams": ["Miami Marlins", "Milwaukee Brewers"]
+      },
+      {
+        "name": "Carlos Correa",
+        "teams": ["Houston Astros", "Minnesota Twins"]
+      },
+      {
+        "name": "Mike Trout",
+        "teams": ["Los Angeles Angels"]
+      },
+      {
+        "name": "Marcus Semien",
+        "teams": ["Chicago White Sox", "Oakland Athletics", "Texas Rangers"]
+      },
+      {
+        "name": "Blake Snell",
+        "teams": ["Tampa Bay Rays", "San Diego Padres", "San Francisco Giants"]
+      },
+      
+
+      {
+        "name": "Alex Rodriguez",
+        "teams": ["Seattle Mariners", "Texas Rangers", "New York Yankees"]
+      },
+      {
+        "name": "Barry Bonds",
+        "teams": ["Pittsburgh Pirates", "San Francisco Giants"]
+      },
+      {
+        "name": "Derek Jeter",
+        "teams": ["New York Yankees"]
+      },
+      {
+        "name": "Ichiro Suzuki",
+        "teams": ["Seattle Mariners", "New York Yankees", "Miami Marlins", "Seattle Mariners"]
+      },
+      {
+        "name": "Ken Griffey Jr.",
+        "teams": ["Seattle Mariners", "Cincinnati Reds", "Chicago White Sox"]
+      },
+      {
+        "name": "Roberto Clemente",
+        "teams": ["Pittsburgh Pirates"]
+      },
+      {
+        "name": "Albert Pujols",
+        "teams": ["St. Louis Cardinals", "Los Angeles Angels", "Los Angeles Dodgers", "St. Louis Cardinals"]
+      },
+      {
+        "name": "David Ortiz",
+        "teams": ["Minnesota Twins", "Boston Red Sox"]
+      },
+      {
+        "name": "Miguel Cabrera",
+        "teams": ["Miami Marlins", "Detroit Tigers"]
+      },
+      {
+        "name": "Mickey Mantle",
+        "teams": ["New York Yankees"]
       }
     ]
   }
