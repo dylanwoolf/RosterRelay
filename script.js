@@ -21,7 +21,7 @@ const teams = [
     { name: "Detroit Tigers", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/DET.svg" },
     { name: "Houston Astros", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/HOU.svg" },
     { name: "Kansas City Royals", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/KCR.svg" },
-    { name: "Los Angeles Angeles", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/ANA.svg" },
+    { name: "Los Angeles Angels", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/ANA.svg" },
     { name: "Los Angeles Dodgers", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/LAD.svg" },
     { name: "Miami Marlins", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/FLA.svg" },
     { name: "Milwaukee Brewers", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/MIL.svg" },
