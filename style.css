@@ -9,6 +9,12 @@ h1 {
     text-align: center; /* Optional: Center the title */
 }
 
+#gameDescription {
+    margin: 1px 0; /* Reduce top and bottom spacing */
+    text-align: center; /* Optional: Center the title */
+    font-style: italic;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -53,7 +59,7 @@ h1 {
 
 .drop-zone {
     width: 100%;
-    max-width: 150px;
+    max-width: 125px;
     height: 60px;
     border: 2px solid #ccc;
     border-radius: 4px;
@@ -138,16 +144,6 @@ h1 {
     display: block;
 }
 
-.score {
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    padding: 10px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
 /* Add padding to account for fixed elements */
 .content-wrapper {
     padding-top: 60px;  /* Space for score */
@@ -210,6 +206,34 @@ h1 {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     transform: translateY(1px);
 }
+
+/* Style for Clear Button */
+#clearButton {
+    padding: 10px 20px;
+    background-color: #e7e301; /* Orange color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    align-self: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px;
+}
+
+#clearButton:hover {
+    background-color: #d4d100;
+    /*background-color: #E64A19;*/
+}
+
+#clearButton:active {
+    background-color: #d4d100;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transform: translateY(1px);
+}
+
 
 /* Style for Submit Button */
 #submitButton {
