@@ -2,27 +2,20 @@ let players = []; // Declare players array globally
 //let score = 0;
 let autoScrollInterval = null;
 let isDragging = false;
-let strikes = 0; // INitialize strikes
+let strikes = 0; // Initialize strikes
 const maxStrikes = 3;
 const dots = document.querySelectorAll('.dot');
 const submitButton = document.querySelector('#submitButton');
 
 const teams = [
-    // Teams in alphabetical order
-    /*
-    "Arizona Diamondbacks", "Atlanta Braves", "Baltimore Orioles", "Boston Red Sox",
-    "Chicago Cubs", "Chicago White Sox", "Cincinnati Reds", "Cleveland Guardians", "Colorado Rockies",
-    "Detroit Tigers", "Houston Astros", "Kansas City Royals", "Los Angeles Angels", "Los Angeles Dodgers",
-    "Miami Marlins", "Milwaukee Brewers", "Minnesota Twins", "New York Mets", "New York Yankees", "Oakland Atheltics",
-    "Philadelphia Phillies", "Pittsburgh Pirates", "San Diego Padres", "San Francisco Giants", "Seattle Mariners",
-    "St. Louis Cardinals", "Tampa Bay Rays", "Texas Rangers", "Toronto Blue Jays", "Washington Nationals"
-    */
+    // Teams in alphabetical order with logos
     { name: "Arizona Diamondbacks", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/ARI.svg" },
     { name: "Atlanta Braves", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/ATL.svg" },
     { name: "Baltimore Orioles", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/BAL.svg" },
     { name: "Boston Red Sox", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/BOS.svg" },
     { name: "Chicago Cubs", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/CHC.svg" },
-    { name: "Cincinnati Reds", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/CHW.svg" },
+    { name: "Chicago White Sox", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/CHW.svg" },
+    { name: "Cincinnati Reds", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/CIN.svg" },
     { name: "Cleveland Guardians", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/CLE.svg" },
     { name: "Colorado Rockies", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/COL.svg" },
     { name: "Detroit Tigers", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/DET.svg" },
@@ -188,19 +181,6 @@ function handleDragStart(event) {
         logo: logoSrc
     };
     event.dataTransfer.setData('application/json', JSON.stringify(dragData));
-    // Get the team name from the draggable element
-    //const teamName = event.target.dataset.teamName || event.target.textContent;
-    // Pass the team name as drag data
-    //event.dataTransfer.setData('text', teamName);
-    
-    // Get the logo's src attribute and pass it via dataTransfer
-    //const logoSrc = event.target.querySelector('img').src;
-    //event.dataTransfer.setData('text', logoSrc);
-
-    //event.dataTransfer.setData('text', event.target.textContent);
-    //const teamName = event.target.dataset.teamName; // Use the dataset to get the team name
-    //event.dataTransfer.setData("text/plain", teamName);
-    //event.target.classList.add("dragging");
 }
 
 function handleDragEnd(event) {
@@ -263,7 +243,7 @@ function handleDrop(event) {
 function checkPlacements() {
     const dropZones = document.querySelectorAll('.drop-zone');
     let allCorrect = true; // Flag to track if everything is correct
-    let hasFilledSlots = false; // Flag to track if there are any filled slots
+    let allFilled = true; // Flag to track if all slots are filled
 
     players.forEach(player => {
         const playerDropZones = Array.from(dropZones).filter(
@@ -276,10 +256,10 @@ function checkPlacements() {
 
             // Skip checking if the slot is empty
             if (!teamLogoSrc) {
+                allFilled = false; // Mark as not all slots filled
                 dropZone.classList.remove('correct', 'incorrect', 'misplaced');
                 return;
             }
-            hasFilledSlots = true; // At least one slot is filled
 
             const correctTeam = teams.find(team => team.name === player.teams[index]); // Find the correct team
             const correctLogoSrc = correctTeam ? correctTeam.logo : ''; // Correct logo for this position
@@ -307,7 +287,7 @@ function checkPlacements() {
     });
 
     // Provide feedback if all answers are correct or not
-    if (allCorrect && hasFilledSlots) {
+    if (allCorrect && allFilled) {
         showModal("Congratulations! All answers are correct!");
     }
 }
@@ -327,16 +307,9 @@ function addStrike() {
 // End the game when the player runs out of strikes
 function endGame() {
     submitButton.disabled = true;
-    alert("3 strikes, you're out! Game Over!");
+    //alert("3 strikes, you're out! Game Over!");
+    showModal("3 strikes, you're out! Game Over!");
 }
-
-// Update score function
-/*
-function updateScore(points) {
-    score += points;
-    document.getElementById('score').textContent = score;
-}
-*/
 
 // Initialize the game when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -354,6 +327,24 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.disabled = false; // Re-enable submit button
         displayPlayers(); // Display five new players
     });
+
+    //Event listener for "Clear" button
+    document.getElementById('clearButton').addEventListener('click', function () {
+        // Get all drop zones
+        const dropZones = document.querySelectorAll('.drop-zone');
+    
+        // Loop through each drop zone
+        dropZones.forEach((zone) => {
+            // Remove any child elements (e.g., team logos or text)
+            while (zone.firstChild) {
+                zone.removeChild(zone.firstChild);
+            }
+    
+            // Reset styles to their default
+            zone.classList.remove('correct', 'incorrect', 'filled');
+            zone.textContent = ""; // Optional: Clear any text content
+        });
+    });    
 
     // Event listener for "Submit" button
     document.getElementById('submitButton').addEventListener('click', checkPlacements);
