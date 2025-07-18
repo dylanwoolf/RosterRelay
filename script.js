@@ -168,7 +168,6 @@ function displayTeams() {
 function handleDragStart(event) {
     isDragging = true;
     event.target.classList.add('dragging');
-    event.target.style.opacity = '0.5';
 
     // Get the team data from the dragged element
     const teamLogo = event.target.querySelector('img');
@@ -185,8 +184,8 @@ function handleDragStart(event) {
 
 function handleDragEnd(event) {
     isDragging = false;
-    event.target.style.opacity = '1'; // Reset opacity to make item appear normal again
     event.target.classList.remove('dragging');
+    
     clearInterval(autoScrollInterval);
     document.querySelectorAll('.scroll-indicator').forEach(indicator => {
         indicator.classList.remove('visible');
@@ -196,7 +195,6 @@ function handleDragEnd(event) {
 function handlePlacedTeamDragStart(event) {
     isDragging = true;
     event.target.classList.add('dragging');
-    event.target.style.opacity = '0.5';
     
     // Get the team data from the placed team
     const teamName = event.target.dataset.teamName;
@@ -220,8 +218,8 @@ function handlePlacedTeamDragStart(event) {
 
 function handlePlacedTeamDragEnd(event) {
     isDragging = false;
-    event.target.style.opacity = '1';
     event.target.classList.remove('dragging');
+    
     clearInterval(autoScrollInterval);
     document.querySelectorAll('.scroll-indicator').forEach(indicator => {
         indicator.classList.remove('visible');

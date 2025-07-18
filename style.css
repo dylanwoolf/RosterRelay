@@ -44,7 +44,7 @@ h1 {
     grid-template-columns: 180px 1fr;
     gap: 6px;
     padding: 4px;
-    border-bottom: 1px solid #eee;
+    /*border-bottom: 1px solid #eee;*/
     align-items: center;
     max-width: 100%;
     overflow: hidden;
@@ -156,11 +156,6 @@ h1 {
     padding-bottom: 100px;  /* Space for team list */
 }
 
-/* Style for the dragging ghost image */
-.team-item.dragging {
-    opacity: 0.5;
-}
-
 /* Scroll indicators */
 .scroll-indicator {
     position: fixed;
@@ -218,7 +213,7 @@ h1 {
 #clearButton {
     padding: 8px 16px;
     background-color: #e7e301;
-    color: white;
+    color: black;
     border: none;
     border-radius: 5px;
     font-size: 14px;
@@ -299,27 +294,6 @@ h1 {
     background-color: #FFEBEE;
     color: #F44336;
 }
-
-/* Message box style
-#messageBox {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 20px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 5px;
-    font-size: 18px;
-    text-align: center;
-    z-index: 1000;
-}
-
-#messageBox.show {
-    display: block;
-}
-*/
 
 /* Modal background */
 .modal {
