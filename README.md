@@ -1,4 +1,4 @@
-MLB Player Team Matching Game
+Roster Relay (MLB Player Team Matching Game)
 ------------------------------
 A fun and interactive drag-and-drop game where players match MLB players to the teams they've played for throughout their careers! Test your baseball knowledge and see if you can correctly place each team in the right slot.
 
