@@ -2,7 +2,7 @@
     "players": [
       {
         "name": "Max Scherzer",
-        "teams": ["Arizona Diamondbacks", "Detroit Tigers", "Washington Nationals", "Los Angeles Dodgers", "New York Mets", "Texas Rangers"]
+        "teams": ["Arizona Diamondbacks", "Detroit Tigers", "Washington Nationals", "Los Angeles Dodgers", "New York Mets", "Texas Rangers", "Toronto Blue Jays"]
       },
       {
         "name": "Justin Verlander",
@@ -38,7 +38,7 @@
       },
       {
         "name": "Juan Soto",
-        "teams": ["Washington Nationals", "San Diego Padres", "New York Yankees"]
+        "teams": ["Washington Nationals", "San Diego Padres", "New York Yankees", "New York Mets"]
       },
       {
         "name": "Manny Machado",
@@ -51,10 +51,6 @@
       {
         "name": "Gerrit Cole",
         "teams": ["Pittsburgh Pirates", "Houston Astros", "New York Yankees"]
-      },
-      {
-        "name": "Jose Altuve",
-        "teams": ["Houston Astros"]
       },
       {
         "name": "Francisco Lindor",
@@ -74,7 +70,7 @@
       },
       {
         "name": "Paul Goldschmidt",
-        "teams": ["Arizona Diamondbacks", "St. Louis Cardinals"]
+        "teams": ["Arizona Diamondbacks", "St. Louis Cardinals", "New York Yankees"]
       },
       {
         "name": "Trea Turner",
@@ -98,10 +94,10 @@
       },
       {
         "name": "Blake Snell",
-        "teams": ["Tampa Bay Rays", "San Diego Padres", "San Francisco Giants"]
+        "teams": ["Tampa Bay Rays", "San Diego Padres", "San Francisco Giants", "Los Angeles Dodgers"]
       },
-      
 
+      
       {
         "name": "Alex Rodriguez",
         "teams": ["Seattle Mariners", "Texas Rangers", "New York Yankees"]

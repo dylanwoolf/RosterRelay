@@ -43,7 +43,7 @@ const teams = [
 
 async function loadPlayerData() {
     try {
-        const response = await fetch('./data/players.json');
+        const response = await fetch('./players.json');
         //if (!response.ok) {
         //    throw new Error(`HTTP error! status: ${response.status}`);
         //}

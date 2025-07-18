@@ -1,40 +1,49 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 8px;
     background-color: #f0f0f0;
+    height: 100vh;
+    overflow: hidden;
 }
 
 h1 {
-    margin: 10px 0; /* Reduce top and bottom spacing */
-    text-align: center; /* Optional: Center the title */
+    padding-top: 10px;
+    margin: 6px 0 3px 0px;
+    text-align: center;
+    font-size: 1.6em;
 }
 
 #gameDescription {
-    margin: 1px 0; /* Reduce top and bottom spacing */
-    text-align: center; /* Optional: Center the title */
+    margin: 1px 0 6px 0;
+    text-align: center;
     font-style: italic;
+    font-size: 0.85em;
 }
 
 .container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 4px;
     max-width: 1200px;
     margin: 0 auto;
+    height: 100vh;
 }
 
 .player-container {
     background: white;
     border-radius: 8px;
-    padding: 10px;
+    padding: 6px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    flex: 0 1 auto;
+    overflow: hidden;
+    margin-bottom: 10px;
 }
 
 .player-row {
     display: grid;
-    grid-template-columns: 200px 1fr;
-    gap: 10px;
-    padding: 10px;
+    grid-template-columns: 180px 1fr;
+    gap: 6px;
+    padding: 4px;
     border-bottom: 1px solid #eee;
     align-items: center;
     max-width: 100%;
@@ -59,8 +68,8 @@ h1 {
 
 .drop-zone {
     width: 100%;
-    max-width: 125px;
-    height: 60px;
+    max-width: 95px;
+    height: 45px;
     border: 2px solid #ccc;
     border-radius: 4px;
     display: flex;
@@ -79,27 +88,21 @@ h1 {
 .team-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    padding: 20px;
+    gap: 4px;
+    padding: 6px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    max-height: 130px;
+    overflow: hidden;
+    margin-top: 0;
 }
 
 .team-item {
-    /*
-    padding: 8px 16px;
-    background: #2196F3;
-    color: white;
-    border-radius: 4px;
-    cursor: move;
-    user-select: none;
-    */
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 8px 16px;
-    /*background: #2196F3;*/
     color: white;
     border-radius: 4px;
     cursor: grab;
@@ -109,17 +112,6 @@ h1 {
 .team-item:hover {
     background: #eaecec;
 }
-
-/*
-.team-item img.team-logo {
-    width: 30px;
-    height: 30px;
-    object-fit: contain;
-    border-radius: 4px;
-    background: white;
-    padding: 2px;
-}
-    */
 
 .placed-team {
     width: 100%;
@@ -138,8 +130,8 @@ h1 {
 }
 
 .team-logo, .placed-team-logo {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     object-fit: contain;
     display: block;
 }
@@ -183,18 +175,19 @@ h1 {
 
 /* Style for Get New Players Button */
 #newPlayersButton {
-    padding: 10px 20px;
+    padding: 8px 16px;
     background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 1em;
+    font-size: 14px;
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s ease;
-    align-self: center; /* Center the button horizontally */
+    align-self: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
+    min-width: 120px;
 }
 
 #newPlayersButton:hover {
@@ -209,18 +202,19 @@ h1 {
 
 /* Style for Clear Button */
 #clearButton {
-    padding: 10px 20px;
-    background-color: #e7e301; /* Orange color */
+    padding: 8px 16px;
+    background-color: #e7e301;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 1em;
+    font-size: 14px;
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s ease;
     align-self: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
+    min-width: 120px;
 }
 
 #clearButton:hover {
@@ -237,18 +231,19 @@ h1 {
 
 /* Style for Submit Button */
 #submitButton {
-    padding: 10px 20px;
+    padding: 8px 16px;
     background-color: #5a60b6;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 1em;
+    font-size: 14px;
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s ease;
-    align-self: center; /* Center the button horizontally */
+    align-self: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     margin-bottom: 10px;
+    min-width: 120px;
 }
 
 #submitButton:hover {
@@ -264,16 +259,19 @@ h1 {
 /* Place get new players and submit buttons next to each other */
 #buttonContainer {
     display: flex;
-    gap: 20px; /* Space between buttons */
-    justify-content: center; /* Center align buttons */
-    margin-top: 5px; /* Add space from the top */
+    gap: 12px;
+    justify-content: center;
+    margin-top: 4px;
 }
 
-#newPlayersButton, #submitButton {
-    padding: 10px 20px;
-    font-size: 16px;
+/*
+#newPlayersButton, #clearButton, #submitButton {
+    padding: 8px 16px;
+    font-size: 14px;
     cursor: pointer;
-}
+    min-width: 120px;
+} 
+*/
 
 /* Add styles for correct and incorrect placements */
 .drop-zone.correct {
@@ -356,18 +354,18 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 5px; /* Space between dots */
-    font-size: 1.5em;
-    margin-top: 1px;
-    margin-bottom: 5px; /* Space below */
+    gap: 5px;
+    font-size: 1.1em;
+    margin-top: 2px;
+    margin-bottom: 4px;
 }
 
 .dot {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     border-radius: 50%;
-    background-color: #ddd; /* Empty dot color */
-    border: 2px solid #bbb; /* Border for better visibility */
+    background-color: #ddd;
+    border: 2px solid #bbb;
 }
 
 .dot.filled {
