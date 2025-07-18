@@ -193,6 +193,47 @@ function handleDragEnd(event) {
     });
 }
 
+function handlePlacedTeamDragStart(event) {
+    isDragging = true;
+    event.target.classList.add('dragging');
+    event.target.style.opacity = '0.5';
+    
+    // Get the team data from the placed team
+    const teamName = event.target.dataset.teamName;
+    const teamLogo = event.target.querySelector('img');
+    const logoSrc = teamLogo.src;
+    
+    // Store the team data in dataTransfer
+    const dragData = {
+        name: teamName,
+        logo: logoSrc,
+        isPlacedTeam: true
+    };
+    event.dataTransfer.setData('application/json', JSON.stringify(dragData));
+    
+    // Store reference to the dragged element globally
+    window.draggedPlacedTeam = event.target;
+    
+    // Hide the team but don't remove it yet
+    event.target.style.visibility = 'hidden';
+}
+
+function handlePlacedTeamDragEnd(event) {
+    isDragging = false;
+    event.target.style.opacity = '1';
+    event.target.classList.remove('dragging');
+    clearInterval(autoScrollInterval);
+    document.querySelectorAll('.scroll-indicator').forEach(indicator => {
+        indicator.classList.remove('visible');
+    });
+    
+    // If the drag was cancelled (not dropped in a valid zone), restore the team
+    if (event.target.style.visibility === 'hidden') {
+        event.target.style.visibility = 'visible';
+        window.draggedPlacedTeam = null;
+    }
+}
+
 
 function handleDragOver(event) {
     event.preventDefault();
@@ -212,26 +253,65 @@ function handleDrop(event) {
         // Get the team data from the dataTransfer
         const dragData = JSON.parse(event.dataTransfer.getData('application/json'));
         
-        // If the drop zone already contains a team, remove it
-        const existingTeam = dropZone.querySelector('.placed-team');
-        if (existingTeam) {
-            existingTeam.remove();
+        // Check if this is a placed team being moved
+        if (dragData.isPlacedTeam && window.draggedPlacedTeam) {
+            // Get the existing team in the target drop zone
+            const existingTeam = dropZone.querySelector('.placed-team');
+            
+            if (existingTeam) {
+                // Swap the teams
+                const draggedTeam = window.draggedPlacedTeam;
+                const originalDropZone = draggedTeam.closest('.drop-zone');
+                
+                // Move the dragged team to the new drop zone
+                dropZone.appendChild(draggedTeam);
+                draggedTeam.style.visibility = 'visible';
+                draggedTeam.style.opacity = '1';
+                draggedTeam.classList.remove('dragging');
+                
+                // Move the existing team to the original drop zone
+                originalDropZone.appendChild(existingTeam);
+            } else {
+                // Just move the dragged team to the empty drop zone
+                const draggedTeam = window.draggedPlacedTeam;
+                const originalDropZone = draggedTeam.closest('.drop-zone');
+                
+                dropZone.appendChild(draggedTeam);
+                draggedTeam.style.visibility = 'visible';
+                draggedTeam.style.opacity = '1';
+                draggedTeam.classList.remove('dragging');
+            }
+            
+            // Clear the global reference
+            window.draggedPlacedTeam = null;
+        } else {
+            // This is a new team from the team list
+            // If the drop zone already contains a team, remove it
+            const existingTeam = dropZone.querySelector('.placed-team');
+            if (existingTeam) {
+                existingTeam.remove();
+            }
+            
+            // Create a new div for the placed team
+            const teamDiv = document.createElement('div');
+            teamDiv.className = 'placed-team';
+            teamDiv.dataset.teamName = dragData.name;
+            teamDiv.draggable = true;
+            
+            // Create and set up the team logo image
+            const teamLogo = document.createElement('img');
+            teamLogo.src = dragData.logo;
+            teamLogo.alt = dragData.name;
+            teamLogo.className = 'team-logo';
+            
+            // Add drag event listeners to the placed team
+            teamDiv.addEventListener('dragstart', handlePlacedTeamDragStart);
+            teamDiv.addEventListener('dragend', handlePlacedTeamDragEnd);
+            
+            // Add the logo to the team div and the team div to the drop zone
+            teamDiv.appendChild(teamLogo);
+            dropZone.appendChild(teamDiv);
         }
-        
-        // Create a new div for the placed team
-        const teamDiv = document.createElement('div');
-        teamDiv.className = 'placed-team';
-        teamDiv.dataset.teamName = dragData.name;
-        
-        // Create and set up the team logo image
-        const teamLogo = document.createElement('img');
-        teamLogo.src = dragData.logo;
-        teamLogo.alt = dragData.name;
-        teamLogo.className = 'team-logo';
-        
-        // Add the logo to the team div and the team div to the drop zone
-        teamDiv.appendChild(teamLogo);
-        dropZone.appendChild(teamDiv);
         
         // Remove any previous validation classes
         dropZone.classList.remove('correct', 'incorrect', 'misplaced');
