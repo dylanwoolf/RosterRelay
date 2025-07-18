@@ -322,6 +322,7 @@ function checkPlacements() {
     const dropZones = document.querySelectorAll('.drop-zone');
     let allCorrect = true; // Flag to track if everything is correct
     let allFilled = true; // Flag to track if all slots are filled
+    let hasIncorrect = false; // Flag to track if there are any incorrect placements
 
     players.forEach(player => {
         const playerDropZones = Array.from(dropZones).filter(
@@ -359,10 +360,15 @@ function checkPlacements() {
                 // Team is incorrect for the player
                 dropZone.classList.add('incorrect');
                 allCorrect = false;
-                addStrike(); // Add a strike for incorrect placements
+                hasIncorrect = true; // Mark that there's at least one incorrect placement
             }
         });
     });
+
+    // Add only one strike if there are any incorrect placements
+    if (hasIncorrect) {
+        addStrike();
+    }
 
     // Provide feedback if all answers are correct or not
     if (allCorrect && allFilled) {
