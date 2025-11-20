@@ -2,8 +2,9 @@ body {
     font-family: Arial, sans-serif;
     margin: 8px;
     background-color: #f0f0f0;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 h1 {
@@ -26,7 +27,8 @@ h1 {
     gap: 4px;
     max-width: 1200px;
     margin: 0 auto;
-    height: 100vh;
+    min-height: calc(100vh - 16px);
+    padding-bottom: 20px;
 }
 
 .player-container {
@@ -358,4 +360,380 @@ h1 {
 
 .dot.filled {
     background-color: #F44336; /* Filled dot color (red) */
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+
+/* Large Tablets and iPad Pro (max-width: 1200px) */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+        padding: 0 12px;
+    }
+
+    .player-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 12px 8px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .player-row:last-child {
+        border-bottom: none;
+    }
+
+    .player-name {
+        font-size: 1.1em;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    .drop-zone-container {
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .drop-zone {
+        min-width: 90px;
+        max-width: 110px;
+        height: 75px;
+        border-width: 3px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 55px;
+        height: 55px;
+    }
+
+    .team-list {
+        max-height: 160px;
+        gap: 8px;
+        padding: 12px;
+        overflow-y: auto;
+    }
+
+    .team-item {
+        padding: 10px 16px;
+    }
+
+    #buttonContainer {
+        gap: 12px;
+        margin-top: 6px;
+    }
+
+    #newPlayersButton, #clearButton, #submitButton {
+        padding: 10px 20px;
+        font-size: 15px;
+        min-width: 140px;
+    }
+
+    .outs {
+        font-size: 1.15em;
+        margin-top: 4px;
+        margin-bottom: 6px;
+    }
+
+    .dot {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Tablets in portrait (max-width: 900px) */
+@media (max-width: 900px) {
+    h1 {
+        font-size: 1.5em;
+        margin: 6px 0 4px 0;
+    }
+
+    #gameDescription {
+        font-size: 0.9em;
+        padding: 0 15px;
+    }
+
+    .player-container {
+        padding: 10px;
+    }
+
+    .player-row {
+        padding: 10px 6px;
+    }
+
+    .player-name {
+        font-size: 1em;
+    }
+
+    .drop-zone-container {
+        gap: 10px;
+    }
+
+    .drop-zone {
+        min-width: 80px;
+        max-width: 95px;
+        height: 70px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .team-list {
+        max-height: 140px;
+        gap: 6px;
+    }
+
+    #buttonContainer {
+        gap: 10px;
+    }
+}
+
+/* Small tablets (max-width: 768px) */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.4em;
+    }
+
+    .player-row {
+        padding: 10px 4px;
+    }
+
+    .player-name {
+        font-size: 0.95em;
+    }
+
+    .drop-zone {
+        min-width: 70px;
+        max-width: 85px;
+        height: 65px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 45px;
+        height: 45px;
+    }
+
+    #newPlayersButton, #clearButton, #submitButton {
+        padding: 8px 16px;
+        font-size: 14px;
+        min-width: 120px;
+    }
+
+    .outs {
+        font-size: 1.05em;
+    }
+
+    .dot {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Mobile phones (max-width: 600px) */
+@media (max-width: 600px) {
+    body {
+        margin: 6px;
+    }
+
+    h1 {
+        font-size: 1.3em;
+        margin: 4px 0;
+        padding-top: 6px;
+    }
+
+    #gameDescription {
+        font-size: 0.8em;
+        margin: 2px 0 6px 0;
+        padding: 0 8px;
+    }
+
+    .container {
+        gap: 4px;
+    }
+
+    .player-container {
+        padding: 6px;
+        margin-bottom: 8px;
+    }
+
+    .player-row {
+        padding: 10px 6px;
+    }
+
+    .player-name {
+        font-size: 0.95em;
+        margin-bottom: 6px;
+    }
+
+    .drop-zone-container {
+        gap: 6px;
+        margin-top: 6px;
+    }
+
+    .drop-zone {
+        min-width: 65px;
+        max-width: 75px;
+        height: 60px;
+        border-width: 2px;
+    }
+
+    .team-list {
+        max-height: 120px;
+        gap: 4px;
+        padding: 6px;
+    }
+
+    .team-item {
+        padding: 8px 12px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    #buttonContainer {
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 4px;
+        align-items: stretch;
+        padding: 0 20px;
+    }
+
+    #newPlayersButton, #clearButton, #submitButton {
+        padding: 10px 16px;
+        font-size: 14px;
+        width: 100%;
+        min-width: auto;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    .outs {
+        font-size: 1em;
+        gap: 5px;
+    }
+
+    .outs p {
+        margin: 0;
+    }
+
+    .dot {
+        width: 16px;
+        height: 16px;
+    }
+
+    .modal-content {
+        width: 85%;
+        max-width: 300px;
+        padding: 20px;
+    }
+
+    .modal-content p {
+        font-size: 1em;
+    }
+}
+
+/* Small phones (max-width: 400px) */
+@media (max-width: 400px) {
+    body {
+        margin: 4px;
+    }
+
+    h1 {
+        font-size: 1.2em;
+        margin: 2px 0;
+    }
+
+    #gameDescription {
+        font-size: 0.75em;
+        padding: 0 6px;
+    }
+
+    .player-container {
+        padding: 4px;
+    }
+
+    .player-row {
+        padding: 8px 4px;
+    }
+
+    .player-name {
+        font-size: 0.9em;
+    }
+
+    .drop-zone {
+        min-width: 58px;
+        max-width: 68px;
+        height: 55px;
+    }
+
+    .drop-zone-container {
+        gap: 5px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 38px;
+        height: 38px;
+    }
+
+    .team-list {
+        max-height: 110px;
+    }
+
+    #buttonContainer {
+        padding: 0 15px;
+    }
+
+    #newPlayersButton, #clearButton, #submitButton {
+        padding: 9px 14px;
+        font-size: 13px;
+    }
+
+    .dot {
+        width: 15px;
+        height: 15px;
+    }
+}
+
+/* Very small phones (max-width: 360px) */
+@media (max-width: 360px) {
+    h1 {
+        font-size: 1.1em;
+    }
+
+    #gameDescription {
+        font-size: 0.7em;
+    }
+
+    .player-name {
+        font-size: 0.85em;
+    }
+
+    .drop-zone {
+        min-width: 52px;
+        max-width: 62px;
+        height: 50px;
+    }
+
+    .drop-zone-container {
+        gap: 4px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 35px;
+        height: 35px;
+    }
+
+    .team-list {
+        max-height: 100px;
+        gap: 3px;
+    }
+
+    #newPlayersButton, #clearButton, #submitButton {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
 }
