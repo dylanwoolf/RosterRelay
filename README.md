@@ -98,5 +98,5 @@ Technologies Used
 
 
 
-Link to play (hosted by Netlify) **outdated**:
+Link to play (hosted by Netlify):
 https://roster-relay.netlify.app/
