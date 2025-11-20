@@ -6,7 +6,7 @@
       },
       {
         "name": "Justin Verlander",
-        "teams": ["Detroit Tigers", "Houston Astros", "New York Mets", "Houston Astros"]
+        "teams": ["Detroit Tigers", "Houston Astros", "New York Mets", "Houston Astros", "San Francisco Giants"]
       },
       {
         "name": "Aaron Judge",
@@ -65,10 +65,6 @@
         "teams": ["Miami Marlins", "New York Yankees"]
       },
       {
-        "name": "Anthony Rizzo",
-        "teams": ["San Diego Padres", "Chicago Cubs", "New York Yankees"]
-      },
-      {
         "name": "Paul Goldschmidt",
         "teams": ["Arizona Diamondbacks", "St. Louis Cardinals", "New York Yankees"]
       },
@@ -82,7 +78,7 @@
       },
       {
         "name": "Carlos Correa",
-        "teams": ["Houston Astros", "Minnesota Twins"]
+        "teams": ["Houston Astros", "Minnesota Twins", "Houston Astros"]
       },
       {
         "name": "Mike Trout",
@@ -97,7 +93,10 @@
         "teams": ["Tampa Bay Rays", "San Diego Padres", "San Francisco Giants", "Los Angeles Dodgers"]
       },
 
-      
+      {
+        "name": "Anthony Rizzo",
+        "teams": ["San Diego Padres", "Chicago Cubs", "New York Yankees"]
+      },
       {
         "name": "Alex Rodriguez",
         "teams": ["Seattle Mariners", "Texas Rangers", "New York Yankees"]
