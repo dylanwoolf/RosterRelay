@@ -13,6 +13,11 @@ let touchDragData = null;
 let touchDragElement = null;
 let touchGhostElement = null;
 let touchStartElement = null;
+let touchLongPressTimer = null;
+let touchStartX = 0;
+let touchStartY = 0;
+const LONG_PRESS_DURATION = 200; // ms to hold before drag starts
+const TOUCH_MOVE_THRESHOLD = 10; // pixels of movement allowed during long press
 
 const teams = [
     // Teams in alphabetical order with logos
@@ -206,9 +211,10 @@ function displayTeams() {
     teamList.addEventListener('drop', handleTeamListDrop);
     teamList.addEventListener('dragleave', handleTeamListDragLeave);
     
-    // Add touch move and end listeners to document for mobile
+    // Add touch move, end, and cancel listeners to document for mobile
     document.addEventListener('touchmove', handleTouchMove, { passive: false });
     document.addEventListener('touchend', handleTouchEnd, { passive: false });
+    document.addEventListener('touchcancel', handleTouchCancel, { passive: false });
     
     teams.forEach(team => {
         const teamDiv = document.createElement('div');
@@ -262,20 +268,54 @@ function handleTouchStart(event) {
     const teamItem = event.target.closest('.team-item');
     if (!teamItem) return;
     
-    event.preventDefault();
+    const touch = event.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    touchStartElement = teamItem;
     
     const teamLogo = teamItem.querySelector('img');
+    if (!teamLogo) return;
+    
+    // Store drag data for potential drag
     touchDragData = {
         name: teamLogo.alt,
         logo: teamLogo.src,
         isPlacedTeam: false
     };
-    touchStartElement = teamItem;
     
-    // Create ghost element
-    createTouchGhost(teamLogo.src, event.touches[0]);
-    
-    isDragging = true;
+    // Start long press timer
+    touchLongPressTimer = setTimeout(() => {
+        // Long press detected, start dragging
+        
+        // Visual feedback
+        teamItem.classList.add('touch-dragging');
+        
+        // Create ghost element at current touch position
+        createTouchGhost(teamLogo.src, { clientX: touchStartX, clientY: touchStartY });
+        
+        isDragging = true;
+        
+        // Vibrate for feedback if available
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+    }, LONG_PRESS_DURATION);
+}
+
+function handleTouchStartCancel(event) {
+    // Cancel long press if touch moves too much (user is scrolling)
+    if (touchLongPressTimer && !isDragging) {
+        const touch = event.touches[0];
+        const deltaX = Math.abs(touch.clientX - touchStartX);
+        const deltaY = Math.abs(touch.clientY - touchStartY);
+        
+        if (deltaX > TOUCH_MOVE_THRESHOLD || deltaY > TOUCH_MOVE_THRESHOLD) {
+            clearTimeout(touchLongPressTimer);
+            touchLongPressTimer = null;
+            touchDragData = null;
+            touchStartElement = null;
+        }
+    }
 }
 
 function handlePlacedTeamTouchStart(event) {
@@ -323,11 +363,26 @@ function updateTouchGhostPosition(touch) {
 }
 
 function handleTouchMove(event) {
+    const touch = event.touches[0];
+    
+    // Check if we should cancel the long press (user is scrolling)
+    if (touchLongPressTimer && !isDragging) {
+        const deltaX = Math.abs(touch.clientX - touchStartX);
+        const deltaY = Math.abs(touch.clientY - touchStartY);
+        
+        if (deltaX > TOUCH_MOVE_THRESHOLD || deltaY > TOUCH_MOVE_THRESHOLD) {
+            clearTimeout(touchLongPressTimer);
+            touchLongPressTimer = null;
+            touchDragData = null;
+            touchStartElement = null;
+            return; // Allow normal scrolling
+        }
+    }
+    
     if (!isDragging || !touchGhostElement) return;
     
     event.preventDefault();
     
-    const touch = event.touches[0];
     updateTouchGhostPosition(touch);
     
     // Highlight drop zones under touch
@@ -368,7 +423,14 @@ function highlightDropZoneUnderTouch(touch) {
 }
 
 function handleTouchEnd(event) {
-    if (!isDragging || !touchDragData) {
+    // Clear long press timer
+    if (touchLongPressTimer) {
+        clearTimeout(touchLongPressTimer);
+        touchLongPressTimer = null;
+    }
+    
+    // If we weren't actually dragging, just cleanup and return
+    if (!isDragging || !touchDragData || !touchGhostElement) {
         cleanupTouchDrag();
         return;
     }
@@ -395,18 +457,14 @@ function handleTouchEnd(event) {
         
         // Check for team list (to remove placed team)
         const teamList = elem.closest('.team-list');
-        if (teamList && touchDragData.isPlacedTeam) {
+        if (teamList && touchDragData && touchDragData.isPlacedTeam) {
             handleTouchDropToTeamList();
             handled = true;
             break;
         }
     }
     
-    // If not dropped in valid zone, restore original element
-    if (!handled && touchStartElement && touchDragData.isPlacedTeam) {
-        touchStartElement.style.opacity = '1';
-    }
-    
+    // Cleanup always restores elements, so just call it
     cleanupTouchDrag();
 }
 
@@ -525,9 +583,38 @@ function handleTouchDropToTeamList() {
     }
 }
 
+function handleTouchCancel(event) {
+    // Touch was cancelled (e.g., too many fingers, system gesture)
+    cleanupTouchDrag();
+}
+
 function cleanupTouchDrag() {
+    // Clear long press timer
+    if (touchLongPressTimer) {
+        clearTimeout(touchLongPressTimer);
+        touchLongPressTimer = null;
+    }
+    
     isDragging = false;
+    
+    // Restore opacity of any element that was being dragged
+    if (touchStartElement) {
+        touchStartElement.style.opacity = '1';
+        touchStartElement.classList.remove('touch-dragging');
+    }
+    
     touchDragData = null;
+    
+    // Remove touch-dragging class from all team items
+    document.querySelectorAll('.team-item.touch-dragging').forEach(item => {
+        item.classList.remove('touch-dragging');
+    });
+    
+    // Restore opacity on all placed teams (in case any were left faded)
+    document.querySelectorAll('.placed-team').forEach(team => {
+        team.style.opacity = '1';
+    });
+    
     touchStartElement = null;
     
     if (touchGhostElement) {
@@ -539,7 +626,10 @@ function cleanupTouchDrag() {
     document.querySelectorAll('.drop-zone').forEach(zone => {
         zone.classList.remove('drag-over');
     });
-    document.getElementById('teamList').classList.remove('drag-over-remove');
+    const teamList = document.getElementById('teamList');
+    if (teamList) {
+        teamList.classList.remove('drag-over-remove');
+    }
 }
 
 function handleTeamListDrop(event) {
