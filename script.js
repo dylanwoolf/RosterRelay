@@ -759,8 +759,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    //Event listener for "Clear All" button - clears everything including correct answers
-    document.getElementById('clearAllButton').addEventListener('click', function () {
+    //Event listener for "Restart" button - clears board and strikes, keeps same players
+    document.getElementById('restartButton').addEventListener('click', function () {
+        // Reset strikes
+        strikes = 0;
+        dots.forEach(dot => {
+            dot.classList.remove('filled');
+            dot.classList.add('empty');
+        });
+        // Re-enable submit button in case it was disabled by game over
+        submitButton.disabled = false;
+        
         // Get all drop zones
         const dropZones = document.querySelectorAll('.drop-zone');
     

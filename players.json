@@ -136,7 +136,46 @@
       {
         "name": "Mickey Mantle",
         "teams": ["New York Yankees"]
-      }
-    ]
-  }
-  
+      },
+      {
+        "name": "Clayton Kershaw",
+        "teams": ["Los Angeles Dodgers"]
+      },
+      {
+        "name": "Randy Johnson",
+        "teams": ["Montreal Expos", "Seattle Mariners", "Houston Astros", "Arizona Diamondbacks", "New York Yankees"]
+      },
+      {
+        "name": "Pedro Martínez",
+        "teams": ["Los Angeles Dodgers", "Montreal Expos", "Boston Red Sox", "New York Mets", "Philadelphia Phillies"]
+      },
+      {
+        "name": "Chipper Jones",
+        "teams": ["Atlanta Braves"]
+      },
+      {
+        "name": "Adrián Beltré",
+        "teams": ["Los Angeles Dodgers", "Seattle Mariners", "Boston Red Sox", "Texas Rangers"]
+      },
+      {
+        "name": "Joey Votto",
+        "teams": ["Cincinnati Reds"]
+      },
+      {
+        "name": "Yadier Molina",
+        "teams": ["St. Louis Cardinals"]
+      },
+      {
+        "name": "Buster Posey",
+        "teams": ["San Francisco Giants"]
+      },
+      {
+        "name": "Felix Hernandez",
+        "teams": ["Seattle Mariners"]
+      },
+      {
+        "name": "Frank Thomas",
+        "teams": ["Chicago White Sox", "Oakland Athletics", "Toronto Blue Jays"]
+    }
+  ]
+}
