@@ -146,6 +146,7 @@ h1 {
     user-select: none;
     transition: all 0.2s ease;
     background: rgba(0,0,0,0.02);
+    touch-action: none;
 }
 
 .team-item:hover {
@@ -167,6 +168,7 @@ h1 {
     align-items: center;
     padding: 4px;
     cursor: grab;
+    touch-action: none;
 }
 
 .placed-team:active {
@@ -651,6 +653,26 @@ input:checked + .slider:before {
 .placed-team.misplaced-team {
     outline: 3px solid #FFC107;
     border-radius: 8px;
+}
+
+/* Touch ghost element for mobile dragging */
+.touch-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0.9;
+    transform: scale(1.1);
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.touch-ghost img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
 }
 
 /* ==================== RESPONSIVE DESIGN ==================== */

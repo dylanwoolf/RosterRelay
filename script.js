@@ -8,6 +8,12 @@ const dots = document.querySelectorAll('.dot');
 const submitButton = document.querySelector('#submitButton');
 let hardMode = false; // Hard mode state
 
+// Touch drag state
+let touchDragData = null;
+let touchDragElement = null;
+let touchGhostElement = null;
+let touchStartElement = null;
+
 const teams = [
     // Teams in alphabetical order with logos
     { name: "Arizona Diamondbacks", logo: "https://cdn.ssref.net/req/202409300/tlogo/br/ig/light/ARI.svg" },
@@ -200,6 +206,10 @@ function displayTeams() {
     teamList.addEventListener('drop', handleTeamListDrop);
     teamList.addEventListener('dragleave', handleTeamListDragLeave);
     
+    // Add touch move and end listeners to document for mobile
+    document.addEventListener('touchmove', handleTouchMove, { passive: false });
+    document.addEventListener('touchend', handleTouchEnd, { passive: false });
+    
     teams.forEach(team => {
         const teamDiv = document.createElement('div');
         teamDiv.className = 'team-item';
@@ -216,6 +226,9 @@ function displayTeams() {
         teamDiv.addEventListener('dragstart', handleDragStart);
         teamDiv.addEventListener('dragend', handleDragEnd);
         teamDiv.addEventListener('dragover', handleDragOver);
+        
+        // Add touch event listeners for mobile
+        teamDiv.addEventListener('touchstart', handleTouchStart, { passive: false });
         
         // Propagate dragstart from the image to the parent div
         teamLogo.addEventListener('dragstart', e => {
@@ -241,6 +254,292 @@ function handleTeamListDragLeave(event) {
     if (!teamList.contains(event.relatedTarget)) {
         teamList.classList.remove('drag-over-remove');
     }
+}
+
+// ==================== TOUCH EVENT HANDLERS ====================
+
+function handleTouchStart(event) {
+    const teamItem = event.target.closest('.team-item');
+    if (!teamItem) return;
+    
+    event.preventDefault();
+    
+    const teamLogo = teamItem.querySelector('img');
+    touchDragData = {
+        name: teamLogo.alt,
+        logo: teamLogo.src,
+        isPlacedTeam: false
+    };
+    touchStartElement = teamItem;
+    
+    // Create ghost element
+    createTouchGhost(teamLogo.src, event.touches[0]);
+    
+    isDragging = true;
+}
+
+function handlePlacedTeamTouchStart(event) {
+    const placedTeam = event.target.closest('.placed-team');
+    if (!placedTeam) return;
+    
+    event.preventDefault();
+    
+    const teamLogo = placedTeam.querySelector('img');
+    touchDragData = {
+        name: placedTeam.dataset.teamName,
+        logo: teamLogo.src,
+        isPlacedTeam: true
+    };
+    touchStartElement = placedTeam;
+    
+    // Hide the original element
+    placedTeam.style.opacity = '0.3';
+    
+    // Create ghost element
+    createTouchGhost(teamLogo.src, event.touches[0]);
+    
+    isDragging = true;
+}
+
+function createTouchGhost(logoSrc, touch) {
+    touchGhostElement = document.createElement('div');
+    touchGhostElement.className = 'touch-ghost';
+    
+    const img = document.createElement('img');
+    img.src = logoSrc;
+    img.className = 'team-logo';
+    
+    touchGhostElement.appendChild(img);
+    document.body.appendChild(touchGhostElement);
+    
+    updateTouchGhostPosition(touch);
+}
+
+function updateTouchGhostPosition(touch) {
+    if (!touchGhostElement) return;
+    
+    touchGhostElement.style.left = (touch.clientX - 25) + 'px';
+    touchGhostElement.style.top = (touch.clientY - 25) + 'px';
+}
+
+function handleTouchMove(event) {
+    if (!isDragging || !touchGhostElement) return;
+    
+    event.preventDefault();
+    
+    const touch = event.touches[0];
+    updateTouchGhostPosition(touch);
+    
+    // Highlight drop zones under touch
+    highlightDropZoneUnderTouch(touch);
+    
+    // Auto-scroll when near edges
+    const scrollThreshold = 100;
+    if (touch.clientY < scrollThreshold) {
+        window.scrollBy(0, -10);
+    } else if (touch.clientY > window.innerHeight - scrollThreshold) {
+        window.scrollBy(0, 10);
+    }
+}
+
+function highlightDropZoneUnderTouch(touch) {
+    // Remove highlights from all drop zones
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.classList.remove('drag-over');
+    });
+    document.getElementById('teamList').classList.remove('drag-over-remove');
+    
+    // Find element under touch
+    const elementsUnderTouch = document.elementsFromPoint(touch.clientX, touch.clientY);
+    
+    for (const elem of elementsUnderTouch) {
+        const dropZone = elem.closest('.drop-zone');
+        if (dropZone) {
+            dropZone.classList.add('drag-over');
+            return;
+        }
+        
+        const teamList = elem.closest('.team-list');
+        if (teamList && touchDragData && touchDragData.isPlacedTeam) {
+            teamList.classList.add('drag-over-remove');
+            return;
+        }
+    }
+}
+
+function handleTouchEnd(event) {
+    if (!isDragging || !touchDragData) {
+        cleanupTouchDrag();
+        return;
+    }
+    
+    event.preventDefault();
+    
+    const touch = event.changedTouches[0];
+    const elementsUnderTouch = document.elementsFromPoint(touch.clientX, touch.clientY);
+    
+    let handled = false;
+    
+    for (const elem of elementsUnderTouch) {
+        // Check for drop zone
+        const dropZone = elem.closest('.drop-zone');
+        if (dropZone) {
+            if (dropZone.classList.contains('hard-mode-zone')) {
+                handleTouchDropHardMode(dropZone);
+            } else {
+                handleTouchDrop(dropZone);
+            }
+            handled = true;
+            break;
+        }
+        
+        // Check for team list (to remove placed team)
+        const teamList = elem.closest('.team-list');
+        if (teamList && touchDragData.isPlacedTeam) {
+            handleTouchDropToTeamList();
+            handled = true;
+            break;
+        }
+    }
+    
+    // If not dropped in valid zone, restore original element
+    if (!handled && touchStartElement && touchDragData.isPlacedTeam) {
+        touchStartElement.style.opacity = '1';
+    }
+    
+    cleanupTouchDrag();
+}
+
+function handleTouchDrop(dropZone) {
+    // Remove drag-over styling
+    dropZone.classList.remove('drag-over');
+    
+    if (touchDragData.isPlacedTeam && touchStartElement) {
+        // Moving a placed team
+        const existingTeam = dropZone.querySelector('.placed-team');
+        
+        if (existingTeam) {
+            // Swap teams
+            const originalDropZone = touchStartElement.closest('.drop-zone');
+            dropZone.appendChild(touchStartElement);
+            touchStartElement.style.opacity = '1';
+            originalDropZone.appendChild(existingTeam);
+            dropZone.classList.add('filled');
+            originalDropZone.classList.add('filled');
+        } else {
+            // Move to empty zone
+            const originalDropZone = touchStartElement.closest('.drop-zone');
+            dropZone.appendChild(touchStartElement);
+            touchStartElement.style.opacity = '1';
+            dropZone.classList.add('filled');
+            if (originalDropZone) {
+                originalDropZone.classList.remove('filled');
+            }
+        }
+    } else {
+        // New team from team list
+        const existingTeam = dropZone.querySelector('.placed-team');
+        if (existingTeam) {
+            existingTeam.remove();
+        }
+        
+        const teamDiv = document.createElement('div');
+        teamDiv.className = 'placed-team';
+        teamDiv.dataset.teamName = touchDragData.name;
+        teamDiv.draggable = true;
+        
+        const teamLogo = document.createElement('img');
+        teamLogo.src = touchDragData.logo;
+        teamLogo.alt = touchDragData.name;
+        teamLogo.className = 'team-logo';
+        
+        teamDiv.addEventListener('dragstart', handlePlacedTeamDragStart);
+        teamDiv.addEventListener('dragend', handlePlacedTeamDragEnd);
+        teamDiv.addEventListener('touchstart', handlePlacedTeamTouchStart, { passive: false });
+        
+        teamDiv.appendChild(teamLogo);
+        dropZone.appendChild(teamDiv);
+        dropZone.classList.add('filled');
+    }
+    
+    dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+}
+
+function handleTouchDropHardMode(dropZone) {
+    dropZone.classList.remove('drag-over');
+    
+    if (touchDragData.isPlacedTeam && touchStartElement) {
+        // Moving a placed team
+        const originalDropZone = touchStartElement.closest('.drop-zone');
+        
+        touchStartElement.classList.remove('correct-team', 'incorrect-team', 'misplaced-team');
+        dropZone.appendChild(touchStartElement);
+        touchStartElement.style.opacity = '1';
+        
+        if (dropZone.querySelectorAll('.placed-team').length > 0) {
+            dropZone.classList.add('filled');
+        }
+        if (originalDropZone && originalDropZone.querySelectorAll('.placed-team').length === 0) {
+            originalDropZone.classList.remove('filled');
+        }
+    } else {
+        // New team from team list
+        const teamDiv = document.createElement('div');
+        teamDiv.className = 'placed-team';
+        teamDiv.dataset.teamName = touchDragData.name;
+        teamDiv.draggable = true;
+        
+        const teamLogo = document.createElement('img');
+        teamLogo.src = touchDragData.logo;
+        teamLogo.alt = touchDragData.name;
+        teamLogo.className = 'team-logo';
+        
+        teamDiv.addEventListener('dragstart', handlePlacedTeamDragStart);
+        teamDiv.addEventListener('dragend', handlePlacedTeamDragEnd);
+        teamDiv.addEventListener('touchstart', handlePlacedTeamTouchStart, { passive: false });
+        
+        teamDiv.appendChild(teamLogo);
+        dropZone.appendChild(teamDiv);
+        dropZone.classList.add('filled');
+    }
+    
+    dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+}
+
+function handleTouchDropToTeamList() {
+    document.getElementById('teamList').classList.remove('drag-over-remove');
+    
+    if (touchStartElement && touchDragData.isPlacedTeam) {
+        const originalDropZone = touchStartElement.closest('.drop-zone');
+        touchStartElement.remove();
+        
+        if (originalDropZone) {
+            if (originalDropZone.classList.contains('hard-mode-zone')) {
+                if (originalDropZone.querySelectorAll('.placed-team').length === 0) {
+                    originalDropZone.classList.remove('filled');
+                }
+            } else {
+                originalDropZone.classList.remove('filled');
+            }
+        }
+    }
+}
+
+function cleanupTouchDrag() {
+    isDragging = false;
+    touchDragData = null;
+    touchStartElement = null;
+    
+    if (touchGhostElement) {
+        touchGhostElement.remove();
+        touchGhostElement = null;
+    }
+    
+    // Remove all drag-over highlights
+    document.querySelectorAll('.drop-zone').forEach(zone => {
+        zone.classList.remove('drag-over');
+    });
+    document.getElementById('teamList').classList.remove('drag-over-remove');
 }
 
 function handleTeamListDrop(event) {
@@ -460,6 +759,8 @@ function handleDrop(event) {
             // Add drag event listeners to the placed team
             teamDiv.addEventListener('dragstart', handlePlacedTeamDragStart);
             teamDiv.addEventListener('dragend', handlePlacedTeamDragEnd);
+            // Add touch event listener for mobile
+            teamDiv.addEventListener('touchstart', handlePlacedTeamTouchStart, { passive: false });
             
             // Add the logo to the team div and the team div to the drop zone
             teamDiv.appendChild(teamLogo);
@@ -525,6 +826,8 @@ function handleDropHardMode(event) {
             
             teamDiv.addEventListener('dragstart', handlePlacedTeamDragStart);
             teamDiv.addEventListener('dragend', handlePlacedTeamDragEnd);
+            // Add touch event listener for mobile
+            teamDiv.addEventListener('touchstart', handlePlacedTeamTouchStart, { passive: false });
             
             teamDiv.appendChild(teamLogo);
             dropZone.appendChild(teamDiv);
