@@ -1,102 +1,172 @@
-Roster Relay (MLB Player Team Matching Game)
-------------------------------
-A fun and interactive drag-and-drop game where players match MLB players to the teams they've played for throughout their careers! Test your baseball knowledge and see if you can correctly place each team in the right slot.
+# ⚾ Roster Relay
 
-Features
---------------------------------
-- Interactive Gameplay: Drag and drop team logos into designated slots for each player.
+> An interactive drag-and-drop game where players match MLB players to the teams they've played for throughout their careers!
 
-- Real-Time Feedback: Get immediate visual feedback for correct, incorrect, and misplaced team selections.
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://roster-relay.netlify.app/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
-- Dynamic Players: Generate a new set of players with the "Get New Players" button.
+[**🎮 Play Now**](https://roster-relay.netlify.app/) | [Report Bug](https://github.com/yourusername/RosterRelay/issues) | [Request Feature](https://github.com/yourusername/RosterRelay/issues)
 
-- Clear Board: Use the "Clear" button to reset all drop zones without changing the current players.
+---
 
-- Scoring System: Keep track of your progress and strive for perfection!
+## 📸 Screenshots
 
-How to Play
------------------------------
-1. Start the Game:
+<!-- Add screenshots here once you have them -->
+*Screenshots coming soon*
 
-- A list of MLB players will appear, along with empty drop zones for each team they've played for.
+## ✨ Features
 
-2. Drag and Drop:
+### Core Gameplay
+- 🎯 **Interactive Drag & Drop** - Intuitive drag-and-drop interface for both desktop and mobile
+- ⚡ **Real-Time Feedback** - Instant visual feedback for correct, incorrect, and misplaced team selections
+- 🔄 **Dynamic Players** - Generate a new set of random players with one click
+- 🎲 **Hard Mode** - Challenge yourself without knowing how many teams each player has played for
+- 📊 **Strike System** - Three-strike system keeps the game exciting and challenging
 
-- Drag team logos from the team list and drop them into the correct slots under each player.
+### Technical Features
+- 📱 **Fully Responsive** - Optimized for mobile, tablet, and desktop
+- 🎨 **Modern UI/UX** - Beautiful gradient backgrounds and smooth animations
+- 👆 **Touch-Optimized** - Long-press drag functionality for mobile devices
+- 🚀 **Modular Code** - Clean, maintainable ES6 module architecture
+- ♿ **Accessible** - Semantic HTML and keyboard-friendly interactions
 
-3. Submit Your Answer:
+## 🎮 How to Play
 
-- Click the "Submit" button to check your placements.
+1. **View the Players** - Five random MLB players appear with empty drop zones for their career teams
+2. **Drag Team Logos** - Drag team logos from the bottom list into the correct slots
+3. **Order Matters** - Place teams in chronological order from left to right
+4. **Submit Your Answer** - Click "Submit" to check your placements
+5. **Three Strikes** - You get three chances to get it right before game over
+6. **Hard Mode (Optional)** - Toggle for an extra challenge where you don't see the number of teams
 
-- If all placements are correct and the board is complete, a congratulatory message will appear.
+### Game Controls
 
-4. Clear the Board (Optional):
+- **Get New Players** - Load a fresh set of players
+- **Clear** - Remove incorrect answers while keeping correct ones
+- **Restart** - Clear everything and start over with the same players
+- **Submit** - Check your answers
 
-- Click the "Clear" button to reset the drop zones without changing the current players.
+## 🚀 Getting Started
 
-5. Get New Players:
+### Prerequisites
 
-- Want a fresh challenge? Click the "Get New Players" button to load a new set of players.
+You'll need a local web server because the app uses `fetch()` to load JSON data. Choose one of the methods below:
 
-6. Hard Mode (Optional):
+### Option 1: Python (Recommended)
 
-- Toggle the "Hard Mode" switch for an extra challenge! In hard mode, you won't see how many teams each player has played for, and you can add as many teams as you want.
-
-Running Locally
------------------------------
-To run this game on your own device, follow these steps:
-
-### Option 1: Using Python (Recommended)
-
-1. Clone or download this repository to your local machine
-
-2. Open a terminal/command prompt and navigate to the project directory:
 ```bash
-cd path/to/RosterRelay
-```
+# Clone the repository
+git clone https://github.com/yourusername/RosterRelay.git
+cd RosterRelay
 
-3. Start a local HTTP server using Python 3:
-```bash
+# Start the server
 python3 -m http.server 8000
+
+# Open in browser
+# Visit http://localhost:8000
 ```
 
-4. Open your web browser and go to:
-```
-http://localhost:8000
-```
+### Option 2: Node.js
 
-### Option 2: Using Node.js
-
-1. Navigate to the project directory in your terminal
-
-2. Run the following command:
 ```bash
+# Using http-server
 npx http-server -p 8000
+
+# Or using live-server
+npx live-server --port=8000
 ```
 
-3. Open your browser to:
+### Option 3: VS Code Live Server
+
+1. Install the [Live Server extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+2. Right-click on `index.html`
+3. Select "Open with Live Server"
+
+## 📁 Project Structure
+
 ```
-http://localhost:8000
+RosterRelay/
+├── index.html              # Main HTML entry point
+├── src/
+│   ├── js/                 # JavaScript modules
+│   │   ├── main.js         # Application initialization
+│   │   ├── game-state.js   # State management
+│   │   ├── game-logic.js   # Game rules & validation
+│   │   ├── drag-drop.js    # Drag & drop handlers
+│   │   ├── ui-controller.js # DOM manipulation
+│   │   └── utils.js        # Utility functions
+│   ├── css/
+│   │   └── style.css       # Styles & animations
+│   └── data/
+│       └── players.json    # MLB player data
+├── assets/                 # Static assets
+├── package.json           # Project metadata
+└── LICENSE                # MIT License
 ```
 
-### Option 3: Using VS Code Live Server
+See [STRUCTURE.md](STRUCTURE.md) for detailed architecture documentation.
 
-1. Install the "Live Server" extension in VS Code
+## 🛠️ Built With
 
-2. Right-click on `index.html` and select "Open with Live Server"
+- **HTML5** - Semantic markup
+- **CSS3** - Modern styling with flexbox/grid, animations, and gradients
+- **JavaScript (ES6+)** - Modular architecture with ES6 modules
+- **Drag and Drop API** - Native browser drag and drop
+- **Touch Events API** - Mobile touch interactions
 
-### Why a server is needed:
-The game loads player data from `players.json` using JavaScript's `fetch()` API. Modern browsers block this for security reasons when opening HTML files directly (`file://`). Running a local server resolves this issue.
+## 🏗️ Architecture Highlights
 
-Technologies Used
-----------------------------------------------
-- HTML: Structure of the game board and elements.
+The codebase has been refactored from a single 1264-line file into a clean, modular architecture:
 
-- CSS: Styling for the board, buttons, and interactive feedback.
+- **Separation of Concerns** - Each module has a single responsibility
+- **ES6 Modules** - Modern import/export system
+- **State Management** - Centralized state in `game-state.js`
+- **Event-Driven** - Clean event handling and delegation
+- **Responsive Design** - Mobile-first approach with progressive enhancement
 
-- JavaScript: Game logic, drag-and-drop functionality, and scoring.
+## 🤝 Contributing
 
+Contributions are welcome! Feel free to:
 
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-Link to play (hosted by Netlify):
-https://roster-relay.netlify.app/
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🎯 Roadmap
+
+- [ ] Add player statistics and career highlights
+- [ ] Implement difficulty levels
+- [ ] Add global leaderboard
+- [ ] Support for other sports leagues
+- [ ] Dark mode toggle
+- [ ] Player search and filter
+- [ ] Achievement system
+- [ ] Share results on social media
+
+## 👤 Author
+
+**Dylan Woolf**
+
+- GitHub: [@yourusername](https://github.com/yourusername)
+
+## 🙏 Acknowledgments
+
+- Team logos provided by [Sports Reference](https://www.sports-reference.com/)
+- Player data compiled from Baseball Reference
+- Inspired by popular sports trivia games
+
+## 📊 Stats
+
+![Code Size](https://img.shields.io/github/languages/code-size/yourusername/RosterRelay)
+![Last Commit](https://img.shields.io/github/last-commit/yourusername/RosterRelay)
+
+---
+
+<p align="center">Made with ⚾ and ❤️</p>

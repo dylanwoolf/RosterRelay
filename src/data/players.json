@@ -1,0 +1,181 @@
+{
+    "players": [
+      {
+        "name": "Max Scherzer",
+        "teams": ["Arizona Diamondbacks", "Detroit Tigers", "Washington Nationals", "Los Angeles Dodgers", "New York Mets", "Texas Rangers", "Toronto Blue Jays"]
+      },
+      {
+        "name": "Justin Verlander",
+        "teams": ["Detroit Tigers", "Houston Astros", "New York Mets", "Houston Astros", "San Francisco Giants"]
+      },
+      {
+        "name": "Aaron Judge",
+        "teams": ["New York Yankees"]
+      },
+      {
+        "name": "Freddie Freeman",
+        "teams": ["Atlanta Braves", "Los Angeles Dodgers"]
+      },
+      {
+        "name": "Mookie Betts",
+        "teams": ["Boston Red Sox", "Los Angeles Dodgers"]
+      },
+      {
+        "name": "Bryce Harper",
+        "teams": ["Washington Nationals", "Philadelphia Phillies"]
+      },
+      {
+        "name": "Jacob deGrom",
+        "teams": ["New York Mets", "Texas Rangers"]
+      },
+      {
+        "name": "Shohei Ohtani",
+        "teams": ["Los Angeles Angels", "Los Angeles Dodgers"]
+      },
+      {
+        "name": "Nolan Arenado",
+        "teams": ["Colorado Rockies", "St. Louis Cardinals"]
+      },
+      {
+        "name": "Juan Soto",
+        "teams": ["Washington Nationals", "San Diego Padres", "New York Yankees", "New York Mets"]
+      },
+      {
+        "name": "Manny Machado",
+        "teams": ["Baltimore Orioles", "Los Angeles Dodgers", "San Diego Padres"]
+      },
+      {
+        "name": "Corey Seager",
+        "teams": ["Los Angeles Dodgers", "Texas Rangers"]
+      },
+      {
+        "name": "Gerrit Cole",
+        "teams": ["Pittsburgh Pirates", "Houston Astros", "New York Yankees"]
+      },
+      {
+        "name": "Francisco Lindor",
+        "teams": ["Cleveland Guardians", "New York Mets"]
+      },
+      {
+        "name": "Xander Bogaerts",
+        "teams": ["Boston Red Sox", "San Diego Padres"]
+      },
+      {
+        "name": "Giancarlo Stanton",
+        "teams": ["Miami Marlins", "New York Yankees"]
+      },
+      {
+        "name": "Paul Goldschmidt",
+        "teams": ["Arizona Diamondbacks", "St. Louis Cardinals", "New York Yankees"]
+      },
+      {
+        "name": "Trea Turner",
+        "teams": ["Washington Nationals", "Los Angeles Dodgers", "Philadelphia Phillies"]
+      },
+      {
+        "name": "Christian Yelich",
+        "teams": ["Miami Marlins", "Milwaukee Brewers"]
+      },
+      {
+        "name": "Carlos Correa",
+        "teams": ["Houston Astros", "Minnesota Twins", "Houston Astros"]
+      },
+      {
+        "name": "Mike Trout",
+        "teams": ["Los Angeles Angels"]
+      },
+      {
+        "name": "Marcus Semien",
+        "teams": ["Chicago White Sox", "Oakland Athletics", "Texas Rangers"]
+      },
+      {
+        "name": "Blake Snell",
+        "teams": ["Tampa Bay Rays", "San Diego Padres", "San Francisco Giants", "Los Angeles Dodgers"]
+      },
+
+      {
+        "name": "Anthony Rizzo",
+        "teams": ["San Diego Padres", "Chicago Cubs", "New York Yankees"]
+      },
+      {
+        "name": "Alex Rodriguez",
+        "teams": ["Seattle Mariners", "Texas Rangers", "New York Yankees"]
+      },
+      {
+        "name": "Barry Bonds",
+        "teams": ["Pittsburgh Pirates", "San Francisco Giants"]
+      },
+      {
+        "name": "Derek Jeter",
+        "teams": ["New York Yankees"]
+      },
+      {
+        "name": "Ichiro Suzuki",
+        "teams": ["Seattle Mariners", "New York Yankees", "Miami Marlins", "Seattle Mariners"]
+      },
+      {
+        "name": "Ken Griffey Jr.",
+        "teams": ["Seattle Mariners", "Cincinnati Reds", "Chicago White Sox"]
+      },
+      {
+        "name": "Roberto Clemente",
+        "teams": ["Pittsburgh Pirates"]
+      },
+      {
+        "name": "Albert Pujols",
+        "teams": ["St. Louis Cardinals", "Los Angeles Angels", "Los Angeles Dodgers", "St. Louis Cardinals"]
+      },
+      {
+        "name": "David Ortiz",
+        "teams": ["Minnesota Twins", "Boston Red Sox"]
+      },
+      {
+        "name": "Miguel Cabrera",
+        "teams": ["Miami Marlins", "Detroit Tigers"]
+      },
+      {
+        "name": "Mickey Mantle",
+        "teams": ["New York Yankees"]
+      },
+      {
+        "name": "Clayton Kershaw",
+        "teams": ["Los Angeles Dodgers"]
+      },
+      {
+        "name": "Randy Johnson",
+        "teams": ["Montreal Expos", "Seattle Mariners", "Houston Astros", "Arizona Diamondbacks", "New York Yankees"]
+      },
+      {
+        "name": "Pedro Martínez",
+        "teams": ["Los Angeles Dodgers", "Montreal Expos", "Boston Red Sox", "New York Mets", "Philadelphia Phillies"]
+      },
+      {
+        "name": "Chipper Jones",
+        "teams": ["Atlanta Braves"]
+      },
+      {
+        "name": "Adrián Beltré",
+        "teams": ["Los Angeles Dodgers", "Seattle Mariners", "Boston Red Sox", "Texas Rangers"]
+      },
+      {
+        "name": "Joey Votto",
+        "teams": ["Cincinnati Reds"]
+      },
+      {
+        "name": "Yadier Molina",
+        "teams": ["St. Louis Cardinals"]
+      },
+      {
+        "name": "Buster Posey",
+        "teams": ["San Francisco Giants"]
+      },
+      {
+        "name": "Felix Hernandez",
+        "teams": ["Seattle Mariners"]
+      },
+      {
+        "name": "Frank Thomas",
+        "teams": ["Chicago White Sox", "Oakland Athletics", "Toronto Blue Jays"]
+    }
+  ]
+}

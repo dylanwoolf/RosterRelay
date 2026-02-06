@@ -1,0 +1,1132 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 8px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+h1 {
+    padding-top: 10px;
+    margin: 6px 0 3px 0px;
+    text-align: center;
+    font-size: 2.2em;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    letter-spacing: 0.5px;
+}
+
+#gameDescription {
+    margin: 1px 0 6px 0;
+    text-align: center;
+    font-style: italic;
+    font-size: 0.95em;
+    color: rgba(255,255,255,0.95);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-width: 1200px;
+    margin: 0 auto;
+    min-height: calc(100vh - 16px);
+    padding-bottom: 20px;
+}
+
+.player-container {
+    background: white;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    flex: 0 1 auto;
+    overflow: hidden;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.player-row {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 10px;
+    padding: 8px;
+    align-items: center;
+    max-width: 100%;
+    overflow: hidden;
+    transition: background 0.2s ease;
+}
+
+.player-row:hover {
+    background: rgba(102, 126, 234, 0.03);
+    border-radius: 8px;
+}
+
+.player-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 1em;
+}
+
+.drop-zones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.drop-zone-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.drop-zone {
+    width: 100%;
+    max-width: 95px;
+    height: 45px;
+    border: 2px dashed #d0d0d0;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: #fafafa;
+    transition: all 0.2s ease;
+}
+
+.drop-zone:hover {
+    border-color: #9ca3af;
+    background: #f5f5f5;
+}
+
+.drop-zone.filled {
+    border-style: solid;
+    border-color: #9ca3af;
+    background: #f0f4ff;
+}
+
+.drop-zone.drag-over {
+    border-color: #667eea;
+    background: #eef2ff;
+    border-style: solid;
+    transform: scale(1.05);
+}
+
+.team-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    padding: 12px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    max-height: 130px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 0;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: all 0.2s ease;
+    -webkit-overflow-scrolling: touch;
+}
+
+.team-list.drag-over-remove {
+    background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+    border: 3px solid #F44336;
+    box-shadow: 0 0 20px rgba(244, 67, 54, 0.4);
+}
+
+.team-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    color: white;
+    border-radius: 10px;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: all 0.2s ease;
+    background: rgba(0,0,0,0.02);
+    -webkit-touch-callout: none;
+}
+
+.team-item:hover {
+    transform: scale(1.08);
+    background: rgba(102, 126, 234, 0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.team-item:active {
+    cursor: grabbing;
+    transform: scale(1.02);
+}
+
+.team-item.touch-dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.placed-team {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.placed-team:active {
+    cursor: grabbing;
+}
+
+.placed-team:hover {
+    opacity: 0.8;
+    transform: scale(1.05);
+    transition: all 0.2s ease;
+}
+
+.placed-team img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.team-logo, .placed-team-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: block;
+    -webkit-user-drag: none;
+    -webkit-touch-callout: none;
+    pointer-events: none;
+}
+
+/* Add padding to account for fixed elements */
+.content-wrapper {
+    padding-top: 60px;  /* Space for score */
+    padding-bottom: 100px;  /* Space for team list */
+}
+
+/* Scroll indicators */
+.scroll-indicator {
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(rgba(0,0,0,0.1), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 999;
+}
+
+.scroll-indicator.top {
+    top: 40px;
+}
+
+.scroll-indicator.bottom {
+    bottom: 100px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.1));
+}
+
+.scroll-indicator.visible {
+    opacity: 1;
+}
+
+/* Style for Get New Players Button */
+#newPlayersButton {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    align-self: center;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+    margin-bottom: 10px;
+    min-width: 120px;
+}
+
+#newPlayersButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.5);
+}
+
+#newPlayersButton:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+}
+
+/* Style for Clear Button */
+#clearButton {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #FFC107 0%, #FFB300 100%);
+    color: #1a1a1a;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    align-self: center;
+    box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+    margin-bottom: 10px;
+    min-width: 100px;
+}
+
+#clearButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 193, 7, 0.5);
+}
+
+#clearButton:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.4);
+}
+
+/* Style for Restart Button */
+#restartButton {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    align-self: center;
+    box-shadow: 0 4px 12px rgba(255, 152, 0, 0.4);
+    margin-bottom: 10px;
+    min-width: 100px;
+}
+
+#restartButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 152, 0, 0.5);
+}
+
+#restartButton:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.4);
+}
+
+
+/* Style for Submit Button */
+#submitButton {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    align-self: center;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    margin-bottom: 10px;
+    min-width: 120px;
+}
+
+#submitButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+}
+
+#submitButton:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+/* Place get new players and submit buttons next to each other */
+#buttonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+/*
+#newPlayersButton, #clearButton, #submitButton {
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    min-width: 120px;
+} 
+*/
+
+/* Add styles for correct and incorrect placements */
+.drop-zone.correct {
+    border-color: #4CAF50;
+    border-style: solid;
+    background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+    color: #4CAF50;
+    box-shadow: 0 0 12px rgba(76, 175, 80, 0.3);
+    animation: correctPulse 0.5s ease;
+}
+
+.drop-zone.incorrect {
+    border-color: #F44336;
+    border-style: solid;
+    background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+    color: #F44336;
+    box-shadow: 0 0 12px rgba(244, 67, 54, 0.3);
+    animation: shake 0.5s ease;
+}
+
+@keyframes correctPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Modal background */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+}
+
+/* Modal content box */
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    width: 340px;
+    max-width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    animation: slideUp 0.4s ease;
+}
+
+.modal-content p {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 20px 0;
+}
+
+/* Modal buttons */
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.modal-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 130px;
+}
+
+.modal-button.primary {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.4);
+}
+
+.modal-button.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(76, 175, 80, 0.5);
+}
+
+.modal-button.primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+}
+
+.modal-button.secondary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.modal-button.secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+}
+
+.modal-button.secondary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+/* Close button */
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s ease;
+}
+
+.close-button:hover {
+    color: #333;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+    to { 
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Misplaced */
+.misplaced {
+    background: linear-gradient(135deg, #FFE0B2 0%, #FFCC80 100%);
+    border-color: #FF9800;
+    border-style: solid;
+    border-width: 3px;
+    color: #E65100;
+    box-shadow: 0 0 12px rgba(255, 152, 0, 0.5);
+}
+
+.outs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 1.1em;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    color: white;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.3);
+    border: 2px solid rgba(255,255,255,0.5);
+    transition: all 0.3s ease;
+}
+
+.dot.filled {
+    background-color: #F44336;
+    border-color: #d32f2f;
+    box-shadow: 0 0 8px rgba(244, 67, 54, 0.6);
+    animation: fillDot 0.3s ease;
+}
+
+@keyframes fillDot {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Hard Mode Toggle */
+.hard-mode-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.hard-mode-label {
+    color: white;
+    font-weight: 600;
+    font-size: 0.95em;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255,255,255,0.3);
+    transition: 0.3s;
+    border-radius: 26px;
+    border: 2px solid rgba(255,255,255,0.5);
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .slider {
+    background: linear-gradient(135deg, #F44336 0%, #d32f2f 100%);
+    border-color: #d32f2f;
+}
+
+input:checked + .slider:before {
+    transform: translateX(24px);
+}
+
+.slider:hover {
+    opacity: 0.9;
+}
+
+/* Hard Mode Drop Zone */
+.hard-mode-zone {
+    min-width: 300px;
+    width: 100%;
+    min-height: 60px;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px;
+    align-content: flex-start;
+}
+
+.hard-mode-zone .placed-team {
+    width: auto;
+    height: auto;
+    flex: 0 0 auto;
+}
+
+/* Hard mode validation styles for individual teams */
+.placed-team.correct-team {
+    outline: 3px solid #4CAF50;
+    border-radius: 8px;
+}
+
+.placed-team.incorrect-team {
+    outline: 3px solid #F44336;
+    border-radius: 8px;
+}
+
+.placed-team.misplaced-team {
+    outline: 3px solid #FF9800;
+    border-radius: 8px;
+    background: rgba(255, 152, 0, 0.15);
+}
+
+/* Touch ghost element for mobile dragging */
+.touch-ghost {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0.9;
+    transform: scale(1.1);
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.touch-ghost img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    display: block;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+
+/* Large Tablets and iPad Pro (max-width: 1200px) */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 100%;
+        padding: 0 12px;
+    }
+
+    .player-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 12px 8px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .player-row:last-child {
+        border-bottom: none;
+    }
+
+    .player-name {
+        font-size: 1.1em;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 8px;
+    }
+
+    .drop-zone-container {
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .drop-zone {
+        min-width: 90px;
+        max-width: 110px;
+        height: 75px;
+        border-width: 3px;
+    }
+
+    .hard-mode-zone {
+        min-width: 250px;
+        min-height: 80px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 55px;
+        height: 55px;
+    }
+
+    .team-list {
+        max-height: 160px;
+        gap: 8px;
+        padding: 12px;
+        overflow-y: auto;
+    }
+
+    .team-item {
+        padding: 10px 16px;
+    }
+
+    #buttonContainer {
+        gap: 10px;
+        margin-top: 6px;
+    }
+
+    #newPlayersButton, #clearButton, #restartButton, #submitButton {
+        padding: 10px 18px;
+        font-size: 14px;
+        min-width: 110px;
+    }
+
+    .outs {
+        font-size: 1.15em;
+        margin-top: 4px;
+        margin-bottom: 6px;
+    }
+
+    .dot {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Tablets in portrait (max-width: 900px) */
+@media (max-width: 900px) {
+    h1 {
+        font-size: 1.5em;
+        margin: 6px 0 4px 0;
+    }
+
+    #gameDescription {
+        font-size: 0.9em;
+        padding: 0 15px;
+    }
+
+    .player-container {
+        padding: 10px;
+    }
+
+    .player-row {
+        padding: 10px 6px;
+    }
+
+    .player-name {
+        font-size: 1em;
+    }
+
+    .drop-zone-container {
+        gap: 10px;
+    }
+
+    .drop-zone {
+        min-width: 80px;
+        max-width: 95px;
+        height: 70px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    .team-list {
+        max-height: 140px;
+        gap: 6px;
+    }
+
+    #buttonContainer {
+        gap: 10px;
+    }
+
+    #newPlayersButton, #clearButton, #restartButton, #submitButton {
+        font-size: 14px;
+        min-width: 100px;
+    }
+}
+
+/* Small tablets (max-width: 768px) */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.4em;
+    }
+
+    .player-row {
+        padding: 10px 4px;
+    }
+
+    .player-name {
+        font-size: 0.95em;
+    }
+
+    .drop-zone {
+        min-width: 70px;
+        max-width: 85px;
+        height: 65px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 45px;
+        height: 45px;
+    }
+
+    #newPlayersButton, #clearButton, #restartButton, #submitButton {
+        padding: 8px 14px;
+        font-size: 13px;
+        min-width: 90px;
+    }
+
+    .outs {
+        font-size: 1.05em;
+    }
+
+    .dot {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* Mobile phones (max-width: 600px) */
+@media (max-width: 600px) {
+    body {
+        margin: 6px;
+    }
+
+    h1 {
+        font-size: 1.3em;
+        margin: 4px 0;
+        padding-top: 6px;
+    }
+
+    #gameDescription {
+        font-size: 0.8em;
+        margin: 2px 0 6px 0;
+        padding: 0 8px;
+    }
+
+    .container {
+        gap: 4px;
+    }
+
+    .player-container {
+        padding: 6px;
+        margin-bottom: 8px;
+    }
+
+    .player-row {
+        padding: 10px 6px;
+    }
+
+    .player-name {
+        font-size: 0.95em;
+        margin-bottom: 6px;
+    }
+
+    .drop-zone-container {
+        gap: 6px;
+        margin-top: 6px;
+    }
+
+    .drop-zone {
+        min-width: 65px;
+        max-width: 75px;
+        height: 60px;
+        border-width: 2px;
+    }
+
+    .hard-mode-zone {
+        min-width: 200px;
+        min-height: 70px;
+        gap: 6px;
+        padding: 6px;
+    }
+
+    .team-list {
+        max-height: 150px;
+        gap: 4px;
+        padding: 6px;
+    }
+
+    .team-item {
+        padding: 8px 12px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    #buttonContainer {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 4px;
+        align-items: stretch;
+        padding: 0 10px;
+        justify-content: center;
+    }
+
+    #newPlayersButton, #clearButton, #restartButton, #submitButton {
+        padding: 9px 14px;
+        font-size: 13px;
+        min-width: 85px;
+        flex: 0 1 auto;
+    }
+
+    #newPlayersButton {
+        flex-basis: 100%;
+        max-width: 300px;
+    }
+
+    .outs {
+        font-size: 1em;
+        gap: 5px;
+    }
+
+    .outs p {
+        margin: 0;
+    }
+
+    .dot {
+        width: 16px;
+        height: 16px;
+    }
+
+    .hard-mode-container {
+        font-size: 0.9em;
+        margin-bottom: 6px;
+    }
+
+    .toggle-switch {
+        width: 45px;
+        height: 24px;
+    }
+
+    .slider:before {
+        height: 16px;
+        width: 16px;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(21px);
+    }
+
+    .modal-content {
+        width: 85%;
+        max-width: 300px;
+        padding: 20px;
+    }
+
+    .modal-content p {
+        font-size: 1em;
+        margin-bottom: 16px;
+    }
+
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .modal-button {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* Small phones (max-width: 400px) */
+@media (max-width: 400px) {
+    body {
+        margin: 4px;
+    }
+
+    h1 {
+        font-size: 1.2em;
+        margin: 2px 0;
+    }
+
+    #gameDescription {
+        font-size: 0.75em;
+        padding: 0 6px;
+    }
+
+    .player-container {
+        padding: 4px;
+    }
+
+    .player-row {
+        padding: 8px 4px;
+    }
+
+    .player-name {
+        font-size: 0.9em;
+    }
+
+    .drop-zone {
+        min-width: 58px;
+        max-width: 68px;
+        height: 55px;
+    }
+
+    .drop-zone-container {
+        gap: 5px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 38px;
+        height: 38px;
+    }
+
+    .team-list {
+        max-height: 130px;
+    }
+
+    #buttonContainer {
+        padding: 0 10px;
+        gap: 6px;
+    }
+
+    #newPlayersButton, #clearButton, #restartButton, #submitButton {
+        padding: 8px 10px;
+        font-size: 12px;
+        min-width: 70px;
+    }
+
+    #newPlayersButton {
+        flex-basis: 100%;
+    }
+
+    .dot {
+        width: 15px;
+        height: 15px;
+    }
+
+    .modal-button {
+        padding: 9px 16px;
+        font-size: 13px;
+    }
+}
+
+/* Very small phones (max-width: 360px) */
+@media (max-width: 360px) {
+    h1 {
+        font-size: 1.1em;
+    }
+
+    #gameDescription {
+        font-size: 0.7em;
+    }
+
+    .player-name {
+        font-size: 0.85em;
+    }
+
+    .drop-zone {
+        min-width: 52px;
+        max-width: 62px;
+        height: 50px;
+    }
+
+    .drop-zone-container {
+        gap: 4px;
+    }
+
+    .team-logo, .placed-team-logo {
+        width: 35px;
+        height: 35px;
+    }
+
+    .team-list {
+        max-height: 120px;
+        gap: 3px;
+    }
+
+    #newPlayersButton, #clearButton, #restartButton, #submitButton {
+        font-size: 11px;
+        padding: 8px 8px;
+        min-width: 65px;
+    }
+}
