@@ -17,12 +17,22 @@
             <button class="inline" id="restartButton">Restart</button>
             <button class="inline" id="submitButton">Submit</button>
         </div>
-        <div class="outs">
-            <p><strong>Strikes:</strong></p>
-            <span class="dot empty"></span>
-            <span class="dot empty"></span>
-            <span class="dot empty"></span>
+        <div class="outs-balls-container">
+            <div class="balls">
+                <p><strong>Balls:</strong></p>
+                <span class="dot ball-dot empty"></span>
+                <span class="dot ball-dot empty"></span>
+                <span class="dot ball-dot empty"></span>
+                <span class="dot ball-dot empty"></span>
+            </div>
+            <div class="outs">
+                <p><strong>Strikes:</strong></p>
+                <span class="dot strike-dot empty"></span>
+                <span class="dot strike-dot empty"></span>
+                <span class="dot strike-dot empty"></span>
+            </div>
         </div>
+        <div id="foulBallNotification" class="foul-ball-notification">Foul Ball!</div>
         <div class="hard-mode-container">
             <label class="toggle-switch">
                 <input type="checkbox" id="hardModeToggle">

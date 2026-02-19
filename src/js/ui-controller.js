@@ -4,7 +4,7 @@
  */
 
 import { teams, currentPlayers, hardMode, testingMode } from './game-state.js';
-import { setCurrentPlayers } from './game-state.js';
+import { setCurrentPlayers, markBoardChanged } from './game-state.js';
 import { getRandomSubset, clearElement, getTestingPlayers } from './utils.js';
 import {
     handleDragStart,
@@ -187,6 +187,8 @@ export function clearDropZones() {
             zone.textContent = "";
         }
     });
+    // Mark board as changed when clearing
+    markBoardChanged();
 }
 
 /**
@@ -205,6 +207,8 @@ export function clearAllDropZones() {
         zone.classList.remove('correct', 'incorrect', 'misplaced', 'filled', 'drag-over');
         zone.textContent = "";
     });
+    // Mark board as changed when clearing
+    markBoardChanged();
 }
 
 // ==================== MODAL FUNCTIONS ====================
@@ -227,25 +231,22 @@ export function showModal(message, showButtons = false, shareText = null) {
     const shareTextElement = document.getElementById('shareText');
     const copyButton = document.getElementById('copyResultsButton');
     
+    // Set the message with subtitle for success
     if (isSuccess) {
         modalMessage.innerHTML = message + '<span class="modal-subtitle">Perfect score! 🏆</span>';
-        
-        // Show share text if provided
-        if (shareText) {
-            shareTextElement.textContent = shareText;
-            shareDisplay.style.display = 'block';
-            
-            // Setup copy button
-            copyButton.onclick = () => copyResults(shareText, copyButton);
-        } else {
-            shareDisplay.style.display = 'none';
-        }
     } else {
         modalMessage.textContent = message;
-        // Hide share display for non-success messages
-        if (shareDisplay) {
-            shareDisplay.style.display = 'none';
-        }
+    }
+    
+    // Show share text if provided (for all end-game scenarios)
+    if (shareText) {
+        shareTextElement.textContent = shareText;
+        shareDisplay.style.display = 'block';
+        
+        // Setup copy button
+        copyButton.onclick = () => copyResults(shareText, copyButton);
+    } else {
+        shareDisplay.style.display = 'none';
     }
     
     if (showButtons) {

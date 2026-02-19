@@ -4,8 +4,8 @@
  */
 
 import { teams } from './game-state.js';
-import { currentPlayers, strikes, MAX_STRIKES, hardMode, attemptHistory, gameWon, resultsReady } from './game-state.js';
-import { setStrikes, addAttempt, resetAttemptHistory, setGameWon, setResultsReady } from './game-state.js';
+import { currentPlayers, strikes, balls, MAX_STRIKES, MAX_BALLS, hardMode, attemptHistory, gameWon, resultsReady, hasSubmittedCurrentState } from './game-state.js';
+import { setStrikes, setBalls, addAttempt, resetAttemptHistory, setGameWon, setResultsReady, setHasSubmittedCurrentState } from './game-state.js';
 import { showModal } from './ui-controller.js';
 
 /**
@@ -35,7 +35,18 @@ export function checkPlacements() {
  */
 export function viewResults() {
     const shareText = attemptHistory.length > 0 ? generateShareableResults() : null;
-    const message = gameWon ? "Congratulations! All answers are correct!" : "3 strikes, you're out! Game Over!";
+    let message;
+    
+    if (gameWon) {
+        message = "Congratulations! All answers are correct!";
+    } else if (strikes >= MAX_STRIKES) {
+        message = "Strike 3! Game Over!";
+    } else if (balls >= MAX_BALLS) {
+        message = "Take your base!";
+    } else {
+        message = "Game Over!";
+    }
+    
     showModal(message, true, shareText);
 }
 
@@ -47,6 +58,7 @@ function checkPlacementsNormalMode() {
     let allCorrect = true;
     let allFilled = true;
     let hasIncorrect = false;
+    let hasMisplaced = false;
 
     currentPlayers.forEach(player => {
         const playerDropZones = Array.from(dropZones).filter(
@@ -80,6 +92,7 @@ function checkPlacementsNormalMode() {
                 // Team is correct for the player but in the wrong order
                 dropZone.classList.add('misplaced');
                 allCorrect = false;
+                hasMisplaced = true;
             } else {
                 // Team is incorrect for the player
                 dropZone.classList.add('incorrect');
@@ -89,19 +102,38 @@ function checkPlacementsNormalMode() {
         });
     });
 
-    // Add only one strike if there are any incorrect placements
-    if (hasIncorrect) {
-        addStrike();
-        addAttempt(false); // Record failed attempt
+    // Only add penalties if this board state hasn't been submitted before
+    if (!hasSubmittedCurrentState) {
+        // Show "Foul Ball!" notification if there are both misplaced and incorrect teams
+        if (hasMisplaced && hasIncorrect) {
+            showFoulBallNotification();
+        }
+        
+        // Add a ball if there are any misplaced teams (but no incorrect ones)
+        if (hasMisplaced && !hasIncorrect) {
+            addBall();
+            addAttempt('ball'); // Record ball attempt
+        }
+
+        // Add only one strike if there are any incorrect placements
+        if (hasIncorrect) {
+            addStrike();
+            addAttempt('strike'); // Record strike attempt
+        }
+        
+        // Mark that we've submitted this board state
+        setHasSubmittedCurrentState(true);
     }
 
     // Provide feedback if all answers are correct
     if (allCorrect && allFilled) {
-        addAttempt(true); // Record successful attempt
-        setGameWon(true); // Mark game as won
-        setResultsReady(true); // Enable view results
-        updateSubmitButton(); // Change button to "View Results"
-        viewResults(); // Automatically show results modal
+        if (!gameWon) {
+            addAttempt('success'); // Record successful attempt
+            setGameWon(true); // Mark game as won
+            setResultsReady(true); // Enable view results
+            updateSubmitButton(); // Change button to "View Results"
+            viewResults(); // Automatically show results modal
+        }
     }
 }
 
@@ -113,6 +145,7 @@ function checkPlacementsHardMode() {
     let allCorrect = true;
     let allFilled = true;
     let hasIncorrect = false;
+    let hasMisplaced = false;
 
     currentPlayers.forEach(player => {
         const playerDropZone = Array.from(dropZones).find(
@@ -156,6 +189,7 @@ function checkPlacementsHardMode() {
             // Right teams, wrong order
             playerDropZone.classList.add('misplaced');
             allCorrect = false;
+            hasMisplaced = true;
             placedTeams.forEach(team => team.classList.add('misplaced-team'));
         } else {
             // Wrong count or wrong teams
@@ -166,19 +200,38 @@ function checkPlacementsHardMode() {
         }
     });
 
-    // Add only one strike if there are any incorrect placements
-    if (hasIncorrect) {
-        addStrike();
-        addAttempt(false); // Record failed attempt
+    // Only add penalties if this board state hasn't been submitted before
+    if (!hasSubmittedCurrentState) {
+        // Show "Foul Ball!" notification if there are both misplaced and incorrect teams
+        if (hasMisplaced && hasIncorrect) {
+            showFoulBallNotification();
+        }
+        
+        // Add a ball if there are any misplaced teams (but no incorrect ones)
+        if (hasMisplaced && !hasIncorrect) {
+            addBall();
+            addAttempt('ball'); // Record ball attempt
+        }
+
+        // Add only one strike if there are any incorrect placements
+        if (hasIncorrect) {
+            addStrike();
+            addAttempt('strike'); // Record strike attempt
+        }
+        
+        // Mark that we've submitted this board state
+        setHasSubmittedCurrentState(true);
     }
 
     // Provide feedback if all answers are correct
     if (allCorrect && allFilled) {
-        addAttempt(true); // Record successful attempt
-        setGameWon(true); // Mark game as won
-        setResultsReady(true); // Enable view results
-        updateSubmitButton(); // Change button to "View Results"
-        viewResults(); // Automatically show results modal
+        if (!gameWon) {
+            addAttempt('success'); // Record successful attempt
+            setGameWon(true); // Mark game as won
+            setResultsReady(true); // Enable view results
+            updateSubmitButton(); // Change button to "View Results"
+            viewResults(); // Automatically show results modal
+        }
     }
 }
 
@@ -186,11 +239,11 @@ function checkPlacementsHardMode() {
  * Add a strike and update the UI
  */
 export function addStrike() {
-    const dots = document.querySelectorAll('.dot');
+    const strikeDots = document.querySelectorAll('.strike-dot');
     
     if (strikes < MAX_STRIKES) {
-        dots[strikes].classList.remove('empty');
-        dots[strikes].classList.add('filled');
+        strikeDots[strikes].classList.remove('empty');
+        strikeDots[strikes].classList.add('filled');
         setStrikes(strikes + 1);
     }
     
@@ -200,7 +253,24 @@ export function addStrike() {
 }
 
 /**
- * End the game when player runs out of strikes
+ * Add a ball and update the UI
+ */
+export function addBall() {
+    const ballDots = document.querySelectorAll('.ball-dot');
+    
+    if (balls < MAX_BALLS) {
+        ballDots[balls].classList.remove('empty');
+        ballDots[balls].classList.add('filled');
+        setBalls(balls + 1);
+    }
+    
+    if (balls >= MAX_BALLS) {
+        endGame();
+    }
+}
+
+/**
+ * End the game when player runs out of strikes or balls
  */
 export function endGame() {
     setResultsReady(true); // Enable view results
@@ -209,18 +279,29 @@ export function endGame() {
 }
 
 /**
- * Reset strikes to zero
+ * Reset strikes and balls to zero
  */
 export function resetStrikes() {
-    const dots = document.querySelectorAll('.dot');
+    const strikeDots = document.querySelectorAll('.strike-dot');
+    const ballDots = document.querySelectorAll('.ball-dot');
+    
     setStrikes(0);
+    setBalls(0);
     resetAttemptHistory();
     setGameWon(false); // Reset game won state
     setResultsReady(false); // Reset results ready state
-    dots.forEach(dot => {
+    setHasSubmittedCurrentState(false); // Reset submission state
+    
+    strikeDots.forEach(dot => {
         dot.classList.remove('filled');
         dot.classList.add('empty');
     });
+    
+    ballDots.forEach(dot => {
+        dot.classList.remove('filled');
+        dot.classList.add('empty');
+    });
+    
     updateSubmitButton(); // Reset button to "Submit"
 }
 
@@ -251,21 +332,42 @@ function updateSubmitButton() {
  * Generate shareable results in Wordle-style format
  */
 function generateShareableResults() {
-    const totalAttempts = attemptHistory.length;
     const mode = hardMode ? " (Hard Mode)" : "";
-    const outcome = gameWon ? totalAttempts : 'X';
     
-    // Build the result string
-    let result = `Roster Relay${mode} ${outcome}/${MAX_STRIKES}\n\n`;
+    // Build the result string with ball-strike count (baseball style)
+    let result = `Roster Relay${mode} (${balls}-${strikes})\n\n`;
     
     // Add attempt emojis
-    attemptHistory.forEach((wasSuccess) => {
-        if (wasSuccess) {
+    attemptHistory.forEach((attemptType) => {
+        if (attemptType === 'success') {
             result += '✅'; // Success
-        } else {
+        } else if (attemptType === 'strike') {
             result += '⚾'; // Strike (baseball)
+        } else if (attemptType === 'ball') {
+            result += '🟡'; // Ball (yellow circle)
         }
     });
     
     return result;
+}
+
+/**
+ * Show the "Foul Ball!" notification with fade animation
+ */
+function showFoulBallNotification() {
+    const notification = document.getElementById('foulBallNotification');
+    
+    // Remove existing show class if present
+    notification.classList.remove('show');
+    
+    // Force reflow to restart animation
+    void notification.offsetWidth;
+    
+    // Add show class to trigger animation
+    notification.classList.add('show');
+    
+    // Remove the show class after animation completes (2 seconds)
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 2000);
 }

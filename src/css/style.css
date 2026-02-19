@@ -680,14 +680,22 @@ h1 {
     50% { transform: scale(1.03); }
 }
 
-.outs {
+.outs-balls-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+}
+
+.outs, .balls {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
     font-size: 1.1em;
-    margin-top: 2px;
-    margin-bottom: 4px;
     color: white;
     font-weight: 600;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
@@ -702,10 +710,17 @@ h1 {
     transition: all 0.3s ease;
 }
 
-.dot.filled {
+.strike-dot.filled {
     background-color: #F44336;
     border-color: #d32f2f;
     box-shadow: 0 0 8px rgba(244, 67, 54, 0.6);
+    animation: fillDot 0.3s ease;
+}
+
+.ball-dot.filled {
+    background-color: #FF9800;
+    border-color: #F57C00;
+    box-shadow: 0 0 8px rgba(255, 152, 0, 0.6);
     animation: fillDot 0.3s ease;
 }
 
@@ -713,6 +728,52 @@ h1 {
     0% { transform: scale(0.8); opacity: 0.5; }
     50% { transform: scale(1.2); }
     100% { transform: scale(1); opacity: 1; }
+}
+
+/* Foul Ball Notification */
+.foul-ball-notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #FFD700;
+    color: #333;
+    padding: 20px 40px;
+    border-radius: 12px;
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    border: 3px solid rgba(255,255,255,0.8);
+}
+
+.foul-ball-notification.show {
+    animation: foulBallFade 2s ease-in-out forwards;
+}
+
+@keyframes foulBallFade {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+    15% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+    25% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    75% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
 }
 
 /* Hard Mode Toggle */
@@ -932,10 +993,14 @@ input:checked + .slider:before {
         min-width: 110px;
     }
 
-    .outs {
-        font-size: 1.15em;
+    .outs-balls-container {
+        gap: 20px;
         margin-top: 4px;
         margin-bottom: 6px;
+    }
+
+    .outs, .balls {
+        font-size: 1.15em;
     }
 
     .dot {
@@ -1029,7 +1094,11 @@ input:checked + .slider:before {
         min-width: 90px;
     }
 
-    .outs {
+    .outs-balls-container {
+        gap: 15px;
+    }
+
+    .outs, .balls {
         font-size: 1.05em;
     }
 
@@ -1131,12 +1200,17 @@ input:checked + .slider:before {
         max-width: 300px;
     }
 
-    .outs {
+    .outs-balls-container {
+        gap: 12px;
+        flex-direction: column;
+    }
+
+    .outs, .balls {
         font-size: 1em;
         gap: 5px;
     }
 
-    .outs p {
+    .outs p, .balls p {
         margin: 0;
     }
 
@@ -1221,6 +1295,11 @@ input:checked + .slider:before {
         width: 32px;
         height: 32px;
     }
+    
+    .foul-ball-notification {
+        font-size: 1.5em;
+        padding: 15px 30px;
+    }
 }
 
 /* Small phones (max-width: 400px) */
@@ -1285,6 +1364,10 @@ input:checked + .slider:before {
         flex-basis: 100%;
     }
 
+    .outs-balls-container {
+        gap: 10px;
+    }
+
     .dot {
         width: 15px;
         height: 15px;
@@ -1293,6 +1376,11 @@ input:checked + .slider:before {
     .modal-button {
         padding: 9px 16px;
         font-size: 13px;
+    }
+    
+    .foul-ball-notification {
+        font-size: 1.3em;
+        padding: 12px 24px;
     }
 }
 

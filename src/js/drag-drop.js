@@ -20,7 +20,8 @@ import {
     setTouchGhostElement,
     setTouchStartElement,
     setTouchLongPressTimer,
-    setTouchStartPosition
+    setTouchStartPosition,
+    markBoardChanged
 } from './game-state.js';
 import { vibrate } from './utils.js';
 
@@ -162,6 +163,9 @@ export function handleDrop(event) {
                 dropZone.classList.remove('correct', 'incorrect', 'misplaced');
                 originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
                 
+                // Mark board as changed
+                markBoardChanged();
+                
                 dropZone.appendChild(draggedTeam);
                 draggedTeam.style.visibility = 'visible';
                 draggedTeam.style.opacity = '1';
@@ -179,6 +183,9 @@ export function handleDrop(event) {
                 // Clear validation classes on both zones
                 dropZone.classList.remove('correct', 'incorrect', 'misplaced');
                 originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+                
+                // Mark board as changed
+                markBoardChanged();
                 
                 dropZone.appendChild(draggedTeam);
                 draggedTeam.style.visibility = 'visible';
@@ -199,6 +206,9 @@ export function handleDrop(event) {
             
             // Clear validation classes when adding new team
             dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            
+            // Mark board as changed
+            markBoardChanged();
             
             const teamDiv = document.createElement('div');
             teamDiv.className = 'placed-team';
@@ -250,6 +260,9 @@ export function handleDropHardMode(event) {
                 originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
             }
             
+            // Mark board as changed
+            markBoardChanged();
+            
             dropZone.appendChild(draggedTeam);
             draggedTeam.style.visibility = 'visible';
             draggedTeam.style.opacity = '1';
@@ -265,6 +278,12 @@ export function handleDropHardMode(event) {
             window.draggedPlacedTeam = null;
         } else {
             // New team from team list
+            // Clear validation classes
+            dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            
+            // Mark board as changed
+            markBoardChanged();
+            
             const teamDiv = document.createElement('div');
             teamDiv.className = 'placed-team';
             teamDiv.dataset.teamName = dragData.name;
@@ -284,8 +303,6 @@ export function handleDropHardMode(event) {
             
             dropZone.classList.add('filled');
         }
-        
-        dropZone.classList.remove('correct', 'incorrect', 'misplaced');
     } catch (error) {
         console.error('Error handling drop:', error);
     }
@@ -330,6 +347,9 @@ export function handleTeamListDrop(event) {
             if (originalDropZone) {
                 // Clear validation classes when team is removed
                 originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+                
+                // Mark board as changed
+                markBoardChanged();
                 
                 if (originalDropZone.classList.contains('hard-mode-zone')) {
                     if (originalDropZone.querySelectorAll('.placed-team').length === 0) {
@@ -554,6 +574,9 @@ function handleTouchDrop(dropZone) {
             dropZone.classList.remove('correct', 'incorrect', 'misplaced');
             originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
             
+            // Mark board as changed
+            markBoardChanged();
+            
             dropZone.appendChild(touchStartElement);
             touchStartElement.style.opacity = '1';
             originalDropZone.appendChild(existingTeam);
@@ -568,6 +591,9 @@ function handleTouchDrop(dropZone) {
             if (originalDropZone) {
                 originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
             }
+            
+            // Mark board as changed
+            markBoardChanged();
             
             dropZone.appendChild(touchStartElement);
             touchStartElement.style.opacity = '1';
@@ -585,6 +611,9 @@ function handleTouchDrop(dropZone) {
         
         // Clear validation classes when adding new team
         dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+        
+        // Mark board as changed
+        markBoardChanged();
         
         const teamDiv = document.createElement('div');
         teamDiv.className = 'placed-team';
@@ -623,6 +652,9 @@ function handleTouchDropHardMode(dropZone) {
             originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
         }
         
+        // Mark board as changed
+        markBoardChanged();
+        
         dropZone.appendChild(touchStartElement);
         touchStartElement.style.opacity = '1';
         
@@ -634,6 +666,9 @@ function handleTouchDropHardMode(dropZone) {
         }
     } else {
         // New team from team list
+        // Mark board as changed
+        markBoardChanged();
+        
         const teamDiv = document.createElement('div');
         teamDiv.className = 'placed-team';
         teamDiv.dataset.teamName = touchDragData.name;
@@ -669,6 +704,9 @@ function handleTouchDropToTeamList() {
         if (originalDropZone) {
             // Clear validation classes when team is removed
             originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            
+            // Mark board as changed
+            markBoardChanged();
             
             if (originalDropZone.classList.contains('hard-mode-zone')) {
                 if (originalDropZone.querySelectorAll('.placed-team').length === 0) {

@@ -7,11 +7,13 @@
 export let players = [];
 export let currentPlayers = [];
 export let strikes = 0;
+export let balls = 0;
 export let hardMode = false;
 export let testingMode = false;
 export let attemptHistory = []; // Track each submission attempt
 export let gameWon = false; // Track if game has been won
 export let resultsReady = false; // Track if results are ready to view
+export let hasSubmittedCurrentState = false; // Track if current board has been submitted
 
 // Drag state
 export let isDragging = false;
@@ -28,6 +30,7 @@ export let touchStartY = 0;
 
 // Constants
 export const MAX_STRIKES = 3;
+export const MAX_BALLS = 4;
 export const LONG_PRESS_DURATION = 200; // ms to hold before drag starts
 export const TOUCH_MOVE_THRESHOLD = 10; // pixels of movement allowed during long press
 
@@ -78,8 +81,13 @@ export function setStrikes(newStrikes) {
     strikes = newStrikes;
 }
 
-export function addAttempt(wasSuccess) {
-    attemptHistory.push(wasSuccess);
+export function setBalls(newBalls) {
+    balls = newBalls;
+}
+
+export function addAttempt(type) {
+    // type can be: 'success', 'strike', or 'ball'
+    attemptHistory.push(type);
 }
 
 export function resetAttemptHistory() {
@@ -92,6 +100,14 @@ export function setGameWon(won) {
 
 export function setResultsReady(ready) {
     resultsReady = ready;
+}
+
+export function setHasSubmittedCurrentState(submitted) {
+    hasSubmittedCurrentState = submitted;
+}
+
+export function markBoardChanged() {
+    hasSubmittedCurrentState = false;
 }
 
 export function setHardMode(mode) {
