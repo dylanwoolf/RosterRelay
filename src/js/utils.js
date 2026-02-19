@@ -61,3 +61,12 @@ export function vibrate(duration = 50) {
         navigator.vibrate(duration);
     }
 }
+
+/**
+ * Filter players with 2 or fewer teams (for testing mode)
+ * @param {Array} players - Array of player objects
+ * @returns {Array} Filtered players
+ */
+export function getTestingPlayers(players) {
+    return players.filter(player => player.teams.length <= 2);
+}

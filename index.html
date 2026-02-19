@@ -30,12 +30,23 @@
             </label>
             <span class="hard-mode-label">Hard Mode</span>
         </div>
+        <div class="testing-mode-container">
+            <label class="toggle-switch">
+                <input type="checkbox" id="testingModeToggle">
+                <span class="slider testing"></span>
+            </label>
+            <span class="testing-mode-label">Testing Mode</span>
+        </div>
         <div class="player-container" id="playerContainer"></div>
         <div class="team-list" id="teamList"></div>
         <div id="congratulationsModal" class="modal">
             <div class="modal-content">
                 <span id="closeModal" class="close-button">&times;</span>
                 <p id="modalMessage">Congratulations! All answers are correct!</p>
+                <div id="shareDisplay" class="share-display" style="display: none;">
+                    <pre id="shareText" class="share-text"></pre>
+                    <button id="copyResultsButton" class="copy-button">📋 Copy Results</button>
+                </div>
                 <div id="modalButtons" class="modal-buttons">
                     <button id="modalNewPlayersButton" class="modal-button primary">Get New Players</button>
                     <button id="modalRestartButton" class="modal-button secondary">Restart</button>

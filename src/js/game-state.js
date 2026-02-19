@@ -8,6 +8,10 @@ export let players = [];
 export let currentPlayers = [];
 export let strikes = 0;
 export let hardMode = false;
+export let testingMode = false;
+export let attemptHistory = []; // Track each submission attempt
+export let gameWon = false; // Track if game has been won
+export let resultsReady = false; // Track if results are ready to view
 
 // Drag state
 export let isDragging = false;
@@ -74,8 +78,28 @@ export function setStrikes(newStrikes) {
     strikes = newStrikes;
 }
 
+export function addAttempt(wasSuccess) {
+    attemptHistory.push(wasSuccess);
+}
+
+export function resetAttemptHistory() {
+    attemptHistory = [];
+}
+
+export function setGameWon(won) {
+    gameWon = won;
+}
+
+export function setResultsReady(ready) {
+    resultsReady = ready;
+}
+
 export function setHardMode(mode) {
     hardMode = mode;
+}
+
+export function setTestingMode(mode) {
+    testingMode = mode;
 }
 
 export function setIsDragging(dragging) {

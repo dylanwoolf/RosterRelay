@@ -158,6 +158,10 @@ export function handleDrop(event) {
                 const draggedTeam = window.draggedPlacedTeam;
                 const originalDropZone = draggedTeam.closest('.drop-zone');
                 
+                // Clear validation classes on both zones when swapping
+                dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+                originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+                
                 dropZone.appendChild(draggedTeam);
                 draggedTeam.style.visibility = 'visible';
                 draggedTeam.style.opacity = '1';
@@ -171,6 +175,10 @@ export function handleDrop(event) {
                 // Move to empty zone
                 const draggedTeam = window.draggedPlacedTeam;
                 const originalDropZone = draggedTeam.closest('.drop-zone');
+                
+                // Clear validation classes on both zones
+                dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+                originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
                 
                 dropZone.appendChild(draggedTeam);
                 draggedTeam.style.visibility = 'visible';
@@ -188,6 +196,9 @@ export function handleDrop(event) {
             if (existingTeam) {
                 existingTeam.remove();
             }
+            
+            // Clear validation classes when adding new team
+            dropZone.classList.remove('correct', 'incorrect', 'misplaced');
             
             const teamDiv = document.createElement('div');
             teamDiv.className = 'placed-team';
@@ -208,8 +219,6 @@ export function handleDrop(event) {
             
             dropZone.classList.add('filled');
         }
-        
-        dropZone.classList.remove('correct', 'incorrect', 'misplaced');
     } catch (error) {
         console.error('Error handling drop:', error);
     }
@@ -234,6 +243,12 @@ export function handleDropHardMode(event) {
             const originalDropZone = draggedTeam.closest('.drop-zone');
             
             draggedTeam.classList.remove('correct-team', 'incorrect-team', 'misplaced-team');
+            
+            // Clear validation classes on both zones
+            dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            if (originalDropZone) {
+                originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            }
             
             dropZone.appendChild(draggedTeam);
             draggedTeam.style.visibility = 'visible';
@@ -313,6 +328,9 @@ export function handleTeamListDrop(event) {
             draggedTeam.remove();
             
             if (originalDropZone) {
+                // Clear validation classes when team is removed
+                originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+                
                 if (originalDropZone.classList.contains('hard-mode-zone')) {
                     if (originalDropZone.querySelectorAll('.placed-team').length === 0) {
                         originalDropZone.classList.remove('filled');
@@ -531,6 +549,11 @@ function handleTouchDrop(dropZone) {
         if (existingTeam) {
             // Swap teams
             const originalDropZone = touchStartElement.closest('.drop-zone');
+            
+            // Clear validation classes on both zones when swapping
+            dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            
             dropZone.appendChild(touchStartElement);
             touchStartElement.style.opacity = '1';
             originalDropZone.appendChild(existingTeam);
@@ -539,6 +562,13 @@ function handleTouchDrop(dropZone) {
         } else {
             // Move to empty zone
             const originalDropZone = touchStartElement.closest('.drop-zone');
+            
+            // Clear validation classes on both zones
+            dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            if (originalDropZone) {
+                originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            }
+            
             dropZone.appendChild(touchStartElement);
             touchStartElement.style.opacity = '1';
             dropZone.classList.add('filled');
@@ -552,6 +582,9 @@ function handleTouchDrop(dropZone) {
         if (existingTeam) {
             existingTeam.remove();
         }
+        
+        // Clear validation classes when adding new team
+        dropZone.classList.remove('correct', 'incorrect', 'misplaced');
         
         const teamDiv = document.createElement('div');
         teamDiv.className = 'placed-team';
@@ -571,8 +604,6 @@ function handleTouchDrop(dropZone) {
         dropZone.appendChild(teamDiv);
         dropZone.classList.add('filled');
     }
-    
-    dropZone.classList.remove('correct', 'incorrect', 'misplaced');
 }
 
 /**
@@ -585,6 +616,13 @@ function handleTouchDropHardMode(dropZone) {
         const originalDropZone = touchStartElement.closest('.drop-zone');
         
         touchStartElement.classList.remove('correct-team', 'incorrect-team', 'misplaced-team');
+        
+        // Clear validation classes on both zones
+        dropZone.classList.remove('correct', 'incorrect', 'misplaced');
+        if (originalDropZone) {
+            originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+        }
+        
         dropZone.appendChild(touchStartElement);
         touchStartElement.style.opacity = '1';
         
@@ -629,6 +667,9 @@ function handleTouchDropToTeamList() {
         touchStartElement.remove();
         
         if (originalDropZone) {
+            // Clear validation classes when team is removed
+            originalDropZone.classList.remove('correct', 'incorrect', 'misplaced');
+            
             if (originalDropZone.classList.contains('hard-mode-zone')) {
                 if (originalDropZone.querySelectorAll('.placed-team').length === 0) {
                     originalDropZone.classList.remove('filled');

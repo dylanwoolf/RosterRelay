@@ -4,19 +4,39 @@
  */
 
 import { teams } from './game-state.js';
-import { currentPlayers, strikes, MAX_STRIKES, hardMode } from './game-state.js';
-import { setStrikes } from './game-state.js';
+import { currentPlayers, strikes, MAX_STRIKES, hardMode, attemptHistory, gameWon, resultsReady } from './game-state.js';
+import { setStrikes, addAttempt, resetAttemptHistory, setGameWon, setResultsReady } from './game-state.js';
 import { showModal } from './ui-controller.js';
 
 /**
  * Check all player team placements and provide feedback
  */
 export function checkPlacements() {
+    // If results are ready, show the modal again
+    if (resultsReady) {
+        viewResults();
+        return;
+    }
+    
+    // Don't allow checking if game is already won
+    if (gameWon) {
+        return;
+    }
+    
     if (hardMode) {
         checkPlacementsHardMode();
     } else {
         checkPlacementsNormalMode();
     }
+}
+
+/**
+ * View the results modal (can be called multiple times)
+ */
+export function viewResults() {
+    const shareText = attemptHistory.length > 0 ? generateShareableResults() : null;
+    const message = gameWon ? "Congratulations! All answers are correct!" : "3 strikes, you're out! Game Over!";
+    showModal(message, true, shareText);
 }
 
 /**
@@ -72,11 +92,16 @@ function checkPlacementsNormalMode() {
     // Add only one strike if there are any incorrect placements
     if (hasIncorrect) {
         addStrike();
+        addAttempt(false); // Record failed attempt
     }
 
     // Provide feedback if all answers are correct
     if (allCorrect && allFilled) {
-        showModal("Congratulations! All answers are correct!", true);
+        addAttempt(true); // Record successful attempt
+        setGameWon(true); // Mark game as won
+        setResultsReady(true); // Enable view results
+        updateSubmitButton(); // Change button to "View Results"
+        viewResults(); // Automatically show results modal
     }
 }
 
@@ -144,11 +169,16 @@ function checkPlacementsHardMode() {
     // Add only one strike if there are any incorrect placements
     if (hasIncorrect) {
         addStrike();
+        addAttempt(false); // Record failed attempt
     }
 
     // Provide feedback if all answers are correct
     if (allCorrect && allFilled) {
-        showModal("Congratulations! All answers are correct!", true);
+        addAttempt(true); // Record successful attempt
+        setGameWon(true); // Mark game as won
+        setResultsReady(true); // Enable view results
+        updateSubmitButton(); // Change button to "View Results"
+        viewResults(); // Automatically show results modal
     }
 }
 
@@ -173,9 +203,9 @@ export function addStrike() {
  * End the game when player runs out of strikes
  */
 export function endGame() {
-    const submitButton = document.querySelector('#submitButton');
-    submitButton.disabled = true;
-    showModal("3 strikes, you're out! Game Over!", true);
+    setResultsReady(true); // Enable view results
+    updateSubmitButton(); // Change button to "View Results"
+    viewResults(); // Automatically show results modal
 }
 
 /**
@@ -184,10 +214,14 @@ export function endGame() {
 export function resetStrikes() {
     const dots = document.querySelectorAll('.dot');
     setStrikes(0);
+    resetAttemptHistory();
+    setGameWon(false); // Reset game won state
+    setResultsReady(false); // Reset results ready state
     dots.forEach(dot => {
         dot.classList.remove('filled');
         dot.classList.add('empty');
     });
+    updateSubmitButton(); // Reset button to "Submit"
 }
 
 /**
@@ -196,4 +230,42 @@ export function resetStrikes() {
 export function enableSubmitButton() {
     const submitButton = document.querySelector('#submitButton');
     submitButton.disabled = false;
+    updateSubmitButton(); // Reset button text
+}
+
+/**
+ * Update submit button text based on game state
+ */
+function updateSubmitButton() {
+    const submitButton = document.querySelector('#submitButton');
+    if (resultsReady) {
+        submitButton.textContent = 'View Results';
+        submitButton.classList.add('view-results');
+    } else {
+        submitButton.textContent = 'Submit';
+        submitButton.classList.remove('view-results');
+    }
+}
+
+/**
+ * Generate shareable results in Wordle-style format
+ */
+function generateShareableResults() {
+    const totalAttempts = attemptHistory.length;
+    const mode = hardMode ? " (Hard Mode)" : "";
+    const outcome = gameWon ? totalAttempts : 'X';
+    
+    // Build the result string
+    let result = `Roster Relay${mode} ${outcome}/${MAX_STRIKES}\n\n`;
+    
+    // Add attempt emojis
+    attemptHistory.forEach((wasSuccess) => {
+        if (wasSuccess) {
+            result += '✅'; // Success
+        } else {
+            result += '⚾'; // Strike (baseball)
+        }
+    });
+    
+    return result;
 }

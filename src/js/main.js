@@ -3,8 +3,7 @@
  * Initializes the game and sets up event listeners
  */
 
-import { players } from './game-state.js';
-import { setPlayers, setHardMode } from './game-state.js';
+import { setPlayers, setHardMode, setTestingMode } from './game-state.js';
 import { loadPlayerData } from './utils.js';
 import {
     displayPlayers,
@@ -30,7 +29,7 @@ async function initialize() {
     console.log('Players loaded successfully:', loadedPlayers.length, 'players');
     
     // Display initial game state
-    displayPlayers(players);
+    displayPlayers(loadedPlayers);
     displayTeams();
     setupScrollHandling();
     
@@ -47,6 +46,9 @@ async function initialize() {
 function setupEventListeners() {
     // Hard mode toggle
     document.getElementById('hardModeToggle').addEventListener('change', handleHardModeToggle);
+    
+    // Testing mode toggle
+    document.getElementById('testingModeToggle').addEventListener('change', handleTestingModeToggle);
     
     // Button event listeners
     document.getElementById('newPlayersButton').addEventListener('click', handleNewPlayers);
@@ -83,12 +85,37 @@ function handleHardModeToggle(e) {
 }
 
 /**
+ * Handle testing mode toggle
+ */
+function handleTestingModeToggle(e) {
+    setTestingMode(e.target.checked);
+    
+    // Clear all drop zones
+    const dropZones = document.querySelectorAll('.drop-zone');
+    dropZones.forEach((zone) => {
+        const placedTeams = zone.querySelectorAll('.placed-team');
+        placedTeams.forEach(team => {
+            team.classList.remove('correct-team', 'incorrect-team', 'misplaced-team');
+        });
+        while (zone.firstChild) {
+            zone.removeChild(zone.firstChild);
+        }
+        zone.classList.remove('correct', 'incorrect', 'misplaced', 'filled', 'drag-over');
+    });
+    
+    // Redisplay with testing mode settings
+    displayPlayersWithoutRefresh();
+}
+
+/**
  * Handle "Get New Players" button
  */
-function handleNewPlayers() {
+async function handleNewPlayers() {
     resetStrikes();
     enableSubmitButton();
-    displayPlayers(players);
+    const loadedPlayers = await loadPlayerData();
+    setPlayers(loadedPlayers);
+    displayPlayers(loadedPlayers);
 }
 
 /**
@@ -117,11 +144,13 @@ function handleSubmit() {
 /**
  * Handle "Get New Players" button in modal
  */
-function handleModalNewPlayers() {
+async function handleModalNewPlayers() {
     hideModal();
     resetStrikes();
     enableSubmitButton();
-    displayPlayers(players);
+    const loadedPlayers = await loadPlayerData();
+    setPlayers(loadedPlayers);
+    displayPlayers(loadedPlayers);
 }
 
 /**
