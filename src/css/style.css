@@ -1,6 +1,6 @@
-/* .testing-mode-container {
-    display: none !important;  Hide in production 
-} */
+.testing-mode-container {
+    display: none !important; /* Hide in production */
+}
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
